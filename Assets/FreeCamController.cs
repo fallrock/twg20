@@ -51,7 +51,8 @@ public class FreeCamController : MonoBehaviour
 
         Vector3 forward = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
         Vector3 right = transform.right;
-        return (input.z * forward + input.x * right) * GetCurrentAcceleration();
+        Vector3 forceDirection = input.z * forward + input.x * right;
+        return forceDirection * GetCurrentAcceleration(forceDirection);
     }
 
     private static Vector3 GetMovementInput() {
@@ -65,10 +66,20 @@ public class FreeCamController : MonoBehaviour
         return ret;
     }
 
-    private float GetCurrentAcceleration() {
-        float currentSpeed = GetComponent<Rigidbody>().velocity.magnitude;
-        float normalizedSpeed = currentSpeed / maxSpeed;
-        return baseAcceleration * (1f - normalizedSpeed);
+    private float GetCurrentAcceleration(Vector3 forceDirection) {
+        Vector3 velocity = GetComponent<Rigidbody>().velocity;
+        Vector3 velocityDirection = velocity.normalized;
+
+        float currentSpeed = velocity.magnitude;
+        float speedRatio = Mathf.Clamp(currentSpeed / maxSpeed, 0f, 1f);
+
+        // cos == 1 when facing backwards, -1 when facing forward
+        float cos = -Vector3.Dot(velocityDirection, forceDirection);
+        float dirRatio = Mathf.Clamp(cos + 1f, 0f, 1f);  // Anything above 90deg is 1
+        float mod = 1f - speedRatio * (1f - dirRatio);
+
+        Debug.Log($"mod: {Mathf.Round(mod * 100f)}%, speedRatio: {Mathf.Round(currentSpeed / maxSpeed * 100f)}%");
+        return baseAcceleration * mod;
     }
 
 }
