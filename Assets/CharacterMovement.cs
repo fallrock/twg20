@@ -2,40 +2,18 @@
 using UnityEngine;
 
 
-public class FreeCamController : MonoBehaviour
+public class CharacterMovement : MonoBehaviour
 {
     public float baseAcceleration = 50f;
     public float maxSpeed = 50f;
-    public float mouseSensitivity = 2f;
-    public float mouseSmoothing = 4f;
-
-    private float clampInDegreesY = 179f;
-    private Vector2 _mouseAbsolute;
-    private Vector2 _smoothMouse;
-    private Quaternion targetOrientation;
+    public Transform directionProvider;
 
     private void Start()
     {
-        Vector3 eulerAngles = transform.rotation.eulerAngles;
-        eulerAngles.x = 0f;
-        targetOrientation = Quaternion.Euler(eulerAngles);
-        Rigidbody rb = GetComponent<Rigidbody>();
-        Cursor.lockState = CursorLockMode.Locked;
     }
 
     private void Update()
     {
-        Vector2 vector = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
-        vector = Vector2.Scale(vector, new Vector2(mouseSensitivity * mouseSmoothing, mouseSensitivity * mouseSmoothing));
-        _smoothMouse.x = Mathf.Lerp(_smoothMouse.x, vector.x, 1f / mouseSmoothing);
-        _smoothMouse.y = Mathf.Lerp(_smoothMouse.y, vector.y, 1f / mouseSmoothing);
-        _mouseAbsolute += _smoothMouse;
-        if (clampInDegreesY < 360f) {
-            _mouseAbsolute.y = Mathf.Clamp(_mouseAbsolute.y, -clampInDegreesY * 0.5f, clampInDegreesY * 0.5f);
-        }
-        transform.localRotation = Quaternion.AngleAxis(-_mouseAbsolute.y, targetOrientation * Vector3.right) * targetOrientation;
-        Quaternion rhs = Quaternion.AngleAxis(_mouseAbsolute.x, transform.InverseTransformDirection(Vector3.up));
-        transform.localRotation *= rhs;
     }
 
     private void FixedUpdate() {
@@ -49,8 +27,8 @@ public class FreeCamController : MonoBehaviour
         if (input == Vector3.zero) { return Vector3.zero; }
         input.Normalize();
 
-        Vector3 forward = Vector3.ProjectOnPlane(transform.forward, Vector3.up).normalized;
-        Vector3 right = transform.right;
+        Vector3 forward = Vector3.ProjectOnPlane(directionProvider.forward, Vector3.up).normalized;
+        Vector3 right = directionProvider.right;
         Vector3 forceDirection = input.z * forward + input.x * right;
         return forceDirection * GetCurrentAcceleration(forceDirection);
     }
