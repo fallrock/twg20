@@ -6,12 +6,33 @@ public class CloneReproductionSystem : MonoBehaviour
 {
     void Start()
     {
-        
+        currentRoundBeginning = Time.time; // remember to re-set it
     }
 
-    // Update is called once per frame
     void Update()
     {
-        
+        // Debug.Log("-----------");
+        // foreach (KeyValuePair<float, Vector3> kvp in positionRecords)
+        // {
+        //     Debug.Log(string.Format("Key = {0}, Value = {1}", kvp.Key, kvp.Value.ToString()));
+        // }
+        // Debug.Log("-----------");
     }
+
+    public void RecordPlayerPosition(Vector3 position) {
+        positionRecords.Add(Time.time, position);
+    }
+
+    public void RecordExplosion(Vector3 position) {
+        explosionRecords.Add(Time.time, position);
+    }
+
+    [HideInInspector]
+    public float currentRoundBeginning;
+
+    public float roundDuration = 30;
+
+    private SortedDictionary<float, Vector3> positionRecords = new SortedDictionary<float, Vector3>();
+
+    private SortedDictionary<float, Vector3> explosionRecords = new SortedDictionary<float, Vector3>();
 }
