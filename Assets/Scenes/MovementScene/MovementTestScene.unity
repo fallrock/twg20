@@ -3409,8 +3409,9 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseAcceleration: 15
-  maxSpeed: 5
-  baseAngle: 1
+  maxSpeed: 10
+  steerAcceleration: 10
+  steerSmoothing: 0.95
   directionProvider: {fileID: 983964450}
 --- !u!135 &1970670419
 SphereCollider:

@@ -6,7 +6,8 @@ public class CharacterMovement : MonoBehaviour
 {
     public float baseAcceleration = 50f;
     public float maxSpeed = 50f;
-    public float baseAngle = 45f;
+    public float steerAcceleration = 10f;
+    [Range(0f, 1f)] public float steerSmoothing = 0.95f;
     public Transform directionProvider;
 
     private void Start() {
@@ -59,7 +60,7 @@ public class CharacterMovement : MonoBehaviour
         float dirRatio = (cos + 1f) / 2f; // 1 backwards, 0 forwards
         float mod = 1f - speedRatio * (1f - dirRatio);
 
-        Debug.Log($"mod: {Mathf.Round(mod * 100f)}%, speedRatio: {Mathf.Round(currentSpeed / maxSpeed * 100f)}%");
+        // Debug.Log($"mod: {Mathf.Round(mod * 100f)}%, speedRatio: {Mathf.Round(currentSpeed / maxSpeed * 100f)}%");
         return baseAcceleration * mod;
     }
 
@@ -67,12 +68,17 @@ public class CharacterMovement : MonoBehaviour
         Rigidbody rb = GetComponent<Rigidbody>();
 
         Vector3 currentDirection = rb.velocity.normalized;
+        wantedDirection = Vector3.Slerp(wantedDirection, currentDirection, steerSmoothing);
 
         var currentRotation = Quaternion.LookRotation(currentDirection);
         var wantedRotation = Quaternion.LookRotation(wantedDirection);
 
-        float angle = Quaternion.Angle(currentRotation, wantedRotation);
-        float t = Mathf.Clamp(baseAngle / angle, 0f, 1f);
+        float wantedAngle = Quaternion.Angle(currentRotation, wantedRotation);
+        float speed = rb.velocity.magnitude;
+
+        float allowedAngle = steerAcceleration / speed;  // Physically accurate
+        Debug.Log($"allowedAngle: {allowedAngle}");
+        float t = Mathf.Clamp(allowedAngle / wantedAngle, 0f, 1f);
 
         rb.velocity = Vector3.Slerp(rb.velocity, wantedDirection * rb.velocity.magnitude, t);
     }
