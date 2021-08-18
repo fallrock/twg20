@@ -3386,6 +3386,7 @@ GameObject:
   - component: {fileID: 1970670421}
   - component: {fileID: 1970670420}
   - component: {fileID: 1970670419}
+  - component: {fileID: 1970670425}
   - component: {fileID: 1970670423}
   - component: {fileID: 1970670418}
   - component: {fileID: 1970670424}
@@ -3409,8 +3410,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   baseAcceleration: 5
-  maxSpeed: 10
   steerAcceleration: 10
+  jumpImpulse: 5
   steerSmoothing: 0.95
   friction: 0.25
   directionProvider: {fileID: 983964450}
@@ -3614,6 +3615,19 @@ TrailRenderer:
   m_MinVertexDistance: 0.1
   m_Autodestruct: 0
   m_Emitting: 1
+--- !u!135 &1970670425
+SphereCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 1970670417}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 2
+  m_Radius: 0.45
+  m_Center: {x: 0, y: -0.1, z: 0}
 --- !u!1 &2020582392
 GameObject:
   m_ObjectHideFlags: 0
