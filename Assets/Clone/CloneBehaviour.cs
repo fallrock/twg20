@@ -12,25 +12,26 @@ public class CloneBehaviour : MonoBehaviour
     void FixedUpdate()
     {
         if (trajectory.Count == 0) return;
-        float currentRoundTime = Time.time - currentRoundBeginning;
+        float localRoundTime = Time.time - currentRoundBeginning;
         var currentPosition =
-            trajectory.FindLast(x => x.Item1 < currentRoundTime);
+            trajectory.FindLast(x => x.Item1 < localRoundTime);
         transform.position = currentPosition.Item2;
         if (currentPosition == trajectory[trajectory.Count - 1]) {
             Explode();
         }
     }
 
-    public void RestartRound(float time) {
-        currentRoundBeginning = Time.time;
-    }
-    public void RestartRound() {
-        RestartRound(Time.time);
+    private void Explode() {
+        ///TODO: actual explosion
+        Debug.Log("*Explosion*");
+        GameObject.Destroy(gameObject);
     }
 
-    private void Explode() {
-        Debug.Log("*Explosion*");
-        Destroy(gameObject);
+    public void StartRound(float time) {
+        currentRoundBeginning = Time.time;
+    }
+    public void StartRound() {
+        StartRound(Time.time);
     }
 
     // [HideInInspector]
