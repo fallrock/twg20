@@ -8,6 +8,7 @@ public class CharacterMovement : MonoBehaviour
     public float maxSpeed = 50f;
     public float steerAcceleration = 10f;
     [Range(0f, 1f)] public float steerSmoothing = 0.95f;
+    [Range(0f, 1f)] public float friction = 0.25f;
     public Transform directionProvider;
 
     private void Start() {
@@ -19,9 +20,10 @@ public class CharacterMovement : MonoBehaviour
     private void FixedUpdate() {
         Vector3 f = GetInputForce();
         if (f != Vector3.zero) {
-            GetComponent<Rigidbody>().AddForce(f);
-            ApplySteering(f.normalized);
+            // GetComponent<Rigidbody>().AddForce(f * GetCurrentAcceleration(f));
+            ApplySteering(f);
         }
+        ApplyFriction();
     }
 
     private Vector3 GetInputForce() {
@@ -33,7 +35,7 @@ public class CharacterMovement : MonoBehaviour
         Vector3 forward = Vector3.ProjectOnPlane(directionProvider.forward, Vector3.up).normalized;
         Vector3 right = directionProvider.right;
         Vector3 forceDirection = input.z * forward + input.x * right;
-        return forceDirection * GetCurrentAcceleration(forceDirection);
+        return forceDirection;
     }
 
     private static Vector3 GetMovementInput() {
@@ -75,19 +77,28 @@ public class CharacterMovement : MonoBehaviour
         if (currentDirection != Vector3.zero) {
             currentDirection.Normalize();
         }
-        wantedDirection = Vector3.Slerp(wantedDirection, currentDirection, steerSmoothing);
+        Vector3 smoothWantedDirection = Vector3.Slerp(wantedDirection, currentDirection, steerSmoothing);
 
         var currentRotation = Quaternion.LookRotation(currentDirection);
-        var wantedRotation = Quaternion.LookRotation(wantedDirection);
+        var wantedRotation = Quaternion.LookRotation(smoothWantedDirection);
 
         float wantedAngle = Quaternion.Angle(currentRotation, wantedRotation);
         float currentSpeed = currentVelocity.magnitude;
 
         float allowedAngle = steerAcceleration / currentSpeed;  // Physically accurate
-        Debug.Log($"allowedAngle: {allowedAngle}");
+        allowedAngle *= Mathf.Pow(Mathf.Clamp(Vector3.Dot(wantedDirection, currentDirection) + 1f, 0f, 1f), 0.5f);
         float t = Mathf.Clamp(allowedAngle / wantedAngle, 0f, 1f);
 
-        rb.velocity = Vector3.Slerp(currentVelocity, wantedDirection * currentSpeed, t);
+        rb.velocity = Vector3.Slerp(currentVelocity, smoothWantedDirection * currentSpeed, t);
+        Vector3 acceleration = Vector3.Project(wantedDirection, currentDirection) * baseAcceleration;
+        rb.AddForce(acceleration, ForceMode.Acceleration);
         rb.velocity += savedY * Vector3.up;
+
+        Debug.Log($"speed: {currentVelocity.magnitude.ToString("0.00")}, allowedAngle: {allowedAngle.ToString("0.000")}, acceleration: {acceleration.magnitude.ToString("0.0")}");
+    }
+
+    private void ApplyFriction() {
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.AddForce(-rb.velocity * friction, ForceMode.Acceleration);
     }
 }
