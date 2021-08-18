@@ -28,13 +28,6 @@ public class CloneReproductionSystem : MonoBehaviour
             new List<(float, Vector3)>(this.trajectory);
     }
 
-    public void RestartRound(float time) {
-        currentRoundBeginning = Time.time;
-    }
-    public void RestartRound() {
-        RestartRound(Time.time);
-    }
-
     private void RecordPosition() {
         trajectory.Add((Time.time - currentRoundBeginning, transform.position));
     }

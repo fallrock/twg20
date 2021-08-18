@@ -42,7 +42,7 @@ MonoBehaviour:
   m_GameObject: {fileID: 6671651835561617190}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: e3f8bb9cf132425d0840d16e6d7a59a8, type: 3}
+  m_Script: {fileID: 11500000, guid: df256688a534b85c7b364cba8895f218, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!1 &6671651837108259358
@@ -169,7 +169,7 @@ Light:
   m_Type: 2
   m_Shape: 0
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_Intensity: 1
+  m_Intensity: 0.5
   m_Range: 10
   m_SpotAngle: 30
   m_InnerSpotAngle: 21.80208

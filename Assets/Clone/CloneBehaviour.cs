@@ -13,9 +13,12 @@ public class CloneBehaviour : MonoBehaviour
     {
         if (trajectory.Count == 0) return;
         float currentRoundTime = Time.time - currentRoundBeginning;
-        transform.position =
-            trajectory.FindLast(x => x.Item1 < currentRoundTime)
-            .Item2;
+        var currentPosition =
+            trajectory.FindLast(x => x.Item1 < currentRoundTime);
+        transform.position = currentPosition.Item2;
+        if (currentPosition == trajectory[trajectory.Count - 1]) {
+            Explode();
+        }
     }
 
     public void RestartRound(float time) {
@@ -23,6 +26,11 @@ public class CloneBehaviour : MonoBehaviour
     }
     public void RestartRound() {
         RestartRound(Time.time);
+    }
+
+    private void Explode() {
+        Debug.Log("*Explosion*");
+        Destroy(gameObject);
     }
 
     // [HideInInspector]
