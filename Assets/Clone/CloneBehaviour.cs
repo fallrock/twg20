@@ -4,10 +4,6 @@ using UnityEngine;
 
 public class CloneBehaviour : MonoBehaviour
 {
-    void Start()
-    {
-        
-    }
 
     void FixedUpdate()
     {

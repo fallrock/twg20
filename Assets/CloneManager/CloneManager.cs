@@ -4,18 +4,14 @@ using UnityEngine;
 
 public class CloneManager : MonoBehaviour
 {
-    void Start()
-    {
-        
-    }
 
-    void Update()
-    {
-        ///TODO: remove it
-        if (Input.GetKey(KeyCode.O)) {
-            InstantiateClones();
-        }
-    }
+    // Demonstation
+    // void Update()
+    // {
+    //     if (Input.GetKeyDown(KeyCode.O)) {
+    //         InstantiateClones();
+    //     }
+    // }
 
     public GameObject clonePrefab;
 

@@ -11,15 +11,19 @@ public class Cloner : MonoBehaviour
         currentRoundBeginning = Time.time;
     }
 
+    // Demonstation
+    // void Update() {
+    //     if (Input.GetKeyDown(KeyCode.Space)) {
+    //         Save();
+    //     }
+    // }
+
     void FixedUpdate()
     {
         RecordPosition();
-        if (Input.GetKey(KeyCode.Space)) {
-            Clone();
-        }
     }
 
-    public void Clone() {
+    public void Save() {
         var manager = cloneManager.GetComponent<CloneManager>();
         manager.Store(this.trajectory);
     }
