@@ -9,7 +9,7 @@ public class CharacterMovement : MonoBehaviour
     public float steerAcceleration = 10f;
     public float jumpImpulse = 5f;
     [Range(0f, 1f)] public float steerSmoothing = 0.95f;
-    [Range(0f, 1f)] public float friction = 0.25f;
+    public float friction = 0.25f;
     public Transform directionProvider;
 
     private int onGround = 0;
@@ -26,7 +26,7 @@ public class CharacterMovement : MonoBehaviour
     }
 
     private void Update() {
-        if (onGround == 1 && Input.GetKeyDown(KeyCode.Space)) {
+        if (onGround == 1 && Input.GetKey(KeyCode.Space)) {
             Vector3 velocity = GetComponent<Rigidbody>().velocity;
             velocity.y = jumpImpulse;
             GetComponent<Rigidbody>().velocity = velocity;
