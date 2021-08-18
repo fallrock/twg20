@@ -4,8 +4,9 @@ using UnityEngine;
 
 public class CharacterMovement : MonoBehaviour
 {
-    public float baseAcceleration = 50f;
-    // public float maxSpeed = 50f;
+    public float steeringForwardAcceleration = 5f;
+    public float baseRawAcceleration = 5f;
+    public float maxSpeed = 5f;
     public float steerAcceleration = 10f;
     public float jumpImpulse = 5f;
     [Range(0f, 1f)] public float steerSmoothing = 0.95f;
@@ -36,7 +37,7 @@ public class CharacterMovement : MonoBehaviour
     private void FixedUpdate() {
         Vector3 f = GetInputForce();
         if (f != Vector3.zero) {
-            // GetComponent<Rigidbody>().AddForce(f * GetCurrentAcceleration(f));
+            GetComponent<Rigidbody>().AddForce(f * GetCurrentAcceleration(f));
             ApplySteering(f);
         }
         ApplyFriction();
@@ -65,22 +66,23 @@ public class CharacterMovement : MonoBehaviour
         return ret;
     }
 
-    // private float GetCurrentAcceleration(Vector3 forceDirection) {
-    //     Vector3 velocity = GetComponent<Rigidbody>().velocity;
-    //     Vector3 velocityDirection = velocity.normalized;
-    //
-    //     float currentSpeed = velocity.magnitude;
-    //     float speedRatio = Mathf.Clamp(currentSpeed / maxSpeed, 0f, 1f);
-    //
-    //     // cos == 1 when facing backwards, -1 when facing forward
-    //     float cos = -Vector3.Dot(velocityDirection, forceDirection);
-    //     // float dirRatio = Mathf.Clamp(cos + 1f, 0f, 1f);  // Anything above 90deg is 1
-    //     float dirRatio = (cos + 1f) / 2f; // 1 backwards, 0 forwards
-    //     float mod = 1f - speedRatio * (1f - dirRatio);
-    //
-    //     // Debug.Log($"mod: {Mathf.Round(mod * 100f)}%, speedRatio: {Mathf.Round(currentSpeed / maxSpeed * 100f)}%");
-    //     return baseAcceleration * mod;
-    // }
+    private float GetCurrentAcceleration(Vector3 forceDirection) {
+        Vector3 velocity = GetComponent<Rigidbody>().velocity;
+        Vector3 velocityDirection = velocity.normalized;
+
+        float currentSpeed = velocity.magnitude;
+        float speedRatio = Mathf.Clamp(currentSpeed / maxSpeed, 0f, 1f);
+
+        // cos == 1 when facing backwards, -1 when facing forward
+        float cos = -Vector3.Dot(velocityDirection, forceDirection);
+        // float dirRatio = Mathf.Clamp(cos + 1f, 0f, 1f);  // Anything above 90deg is 1
+        float dirRatio = (cos + 1f) / 2f; // 1 backwards, 0 forwards
+        // float mod = 1f - speedRatio * (1f - dirRatio);
+        float mod = 1f - speedRatio;
+
+        Debug.Log($"mod: {Mathf.Round(mod * 100f)}%, speedRatio: {Mathf.Round(currentSpeed / maxSpeed * 100f)}%");
+        return baseRawAcceleration * mod;
+    }
 
     private void ApplySteering(Vector3 wantedDirection) {
         Rigidbody rb = GetComponent<Rigidbody>();
@@ -106,11 +108,11 @@ public class CharacterMovement : MonoBehaviour
         float t = Mathf.Clamp(allowedAngle / wantedAngle, 0f, 1f);
 
         rb.velocity = Vector3.Slerp(currentVelocity, smoothWantedDirection * currentSpeed, t);
-        Vector3 acceleration = Vector3.Project(wantedDirection, currentDirection) * baseAcceleration;
+        Vector3 acceleration = Vector3.Project(wantedDirection, currentDirection) * steeringForwardAcceleration;
         rb.AddForce(acceleration, ForceMode.Acceleration);
         rb.velocity += savedY * Vector3.up;
 
-        Debug.Log($"speed: {currentVelocity.magnitude.ToString("0.00")}, allowedAngle: {allowedAngle.ToString("0.000")}, acceleration: {acceleration.magnitude.ToString("0.0")}");
+        // Debug.Log($"speed: {currentVelocity.magnitude.ToString("0.00")}, allowedAngle: {allowedAngle.ToString("0.000")}, acceleration: {acceleration.magnitude.ToString("0.0")}");
     }
 
     private void ApplyFriction() {
