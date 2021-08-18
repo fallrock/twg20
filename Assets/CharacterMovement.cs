@@ -24,7 +24,7 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    private Vector3 GetInputForce() { 
+    private Vector3 GetInputForce() {
         Vector3 input = GetMovementInput();
         input.y = 0f;
         if (input == Vector3.zero) { return Vector3.zero; }
@@ -66,20 +66,28 @@ public class CharacterMovement : MonoBehaviour
 
     private void ApplySteering(Vector3 wantedDirection) {
         Rigidbody rb = GetComponent<Rigidbody>();
+        Vector3 currentVelocity = rb.velocity;
+        float savedY = currentVelocity.y;
+        currentVelocity.y = 0f;  // Ignore the third dimension in all calculations
 
-        Vector3 currentDirection = rb.velocity.normalized;
+        Vector3 currentDirection = currentVelocity;
+        currentDirection.y = 0f;
+        if (currentDirection != Vector3.zero) {
+            currentDirection.Normalize();
+        }
         wantedDirection = Vector3.Slerp(wantedDirection, currentDirection, steerSmoothing);
 
         var currentRotation = Quaternion.LookRotation(currentDirection);
         var wantedRotation = Quaternion.LookRotation(wantedDirection);
 
         float wantedAngle = Quaternion.Angle(currentRotation, wantedRotation);
-        float speed = rb.velocity.magnitude;
+        float currentSpeed = currentVelocity.magnitude;
 
-        float allowedAngle = steerAcceleration / speed;  // Physically accurate
+        float allowedAngle = steerAcceleration / currentSpeed;  // Physically accurate
         Debug.Log($"allowedAngle: {allowedAngle}");
         float t = Mathf.Clamp(allowedAngle / wantedAngle, 0f, 1f);
 
-        rb.velocity = Vector3.Slerp(rb.velocity, wantedDirection * rb.velocity.magnitude, t);
+        rb.velocity = Vector3.Slerp(currentVelocity, wantedDirection * currentSpeed, t);
+        rb.velocity += savedY * Vector3.up;
     }
 }
