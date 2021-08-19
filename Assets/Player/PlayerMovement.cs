@@ -8,6 +8,7 @@ public class PlayerMovement : MonoBehaviour
     public float baseRawAcceleration = 8f;
     public float deceleration = 10f;
     public float rawAccelerationMaxSpeed = 5f;
+    public float maxPreciseSpeed = 0.1f;
     public float steeringMinSpeed = 3f;
     public float steerAcceleration = 15f;
     public float jumpImpulse = 5f;
@@ -91,11 +92,14 @@ public class PlayerMovement : MonoBehaviour
     void ApplyLowSpeedAcceleration(Vector3 forceDirection, float scale) {
         Rigidbody rb = GetComponent<Rigidbody>();
         Vector3 currentVelocity = rb.velocity;
+        currentVelocity.y = 0f;
 
         float currentSpeed = currentVelocity.magnitude;
 
         float acceleration = this.baseRawAcceleration * scale;
         acceleration = MixDeceleration(acceleration, forceDirection);
+        acceleration *= Mathf.Lerp(0.5f, 1f, Mathf.Pow(Mathf.InverseLerp(0f, this.maxPreciseSpeed, currentSpeed), 2f));
+        Debug.Log(Mathf.InverseLerp(0f, this.maxPreciseSpeed, currentSpeed));
         rb.AddForce(forceDirection * acceleration, ForceMode.Acceleration);
     }
 
