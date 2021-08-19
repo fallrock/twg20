@@ -176,6 +176,7 @@ GameObject:
   - component: {fileID: 2038331596030333696}
   - component: {fileID: 2038331596030333710}
   - component: {fileID: 2038331596030333707}
+  - component: {fileID: 1452017673386128899}
   - component: {fileID: 2038331596030333697}
   m_Layer: 0
   m_Name: Character
@@ -312,6 +313,18 @@ MonoBehaviour:
   afkDeceleration: 1
   friction: 0.005
   directionProvider: {fileID: 2038331594825515899}
+--- !u!114 &1452017673386128899
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 2038331596030333704}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 001256051fad23d68a8958ed1ea5b65e, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!96 &2038331596030333697
 TrailRenderer:
   serializedVersion: 2
@@ -429,7 +442,7 @@ GameObject:
   m_Component:
   - component: {fileID: 3356816343190542282}
   m_Layer: 0
-  m_Name: CharacterPrefab
+  m_Name: Player
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
