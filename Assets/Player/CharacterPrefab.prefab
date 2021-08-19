@@ -303,12 +303,13 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   steeringForwardAcceleration: 5
   baseRawAcceleration: 8
+  deceleration: 10
   rawAccelerationMaxSpeed: 5
   steeringMinSpeed: 3
   steerAcceleration: 15
   jumpImpulse: 5
   steerSmoothing: 0.95
-  deceleration: 1
+  afkDeceleration: 1
   friction: 0.005
   directionProvider: {fileID: 2038331594825515899}
 --- !u!96 &2038331596030333697

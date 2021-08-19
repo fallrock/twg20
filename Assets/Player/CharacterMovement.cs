@@ -6,12 +6,13 @@ public class CharacterMovement : MonoBehaviour
 {
     public float steeringForwardAcceleration = 5f;
     public float baseRawAcceleration = 8f;
+    public float deceleration = 10f;
     public float rawAccelerationMaxSpeed = 5f;
     public float steeringMinSpeed = 3f;
     public float steerAcceleration = 15f;
     public float jumpImpulse = 5f;
     [Range(0f, 1f)] public float steerSmoothing = 0.95f;
-    public float deceleration = 1f;
+    public float afkDeceleration = 1f;
     [Range(0f, 1f)] public float friction = 0.005f;
     public Transform directionProvider;
 
@@ -29,7 +30,7 @@ public class CharacterMovement : MonoBehaviour
     }
 
     private void Update() {
-        if (onGround == 1 && Input.GetKey(KeyCode.Space)) {
+        if (onGround != 0 && Input.GetKey(KeyCode.Space)) {
             Vector3 velocity = GetComponent<Rigidbody>().velocity;
             velocity.y = jumpImpulse;
             GetComponent<Rigidbody>().velocity = velocity;
@@ -44,10 +45,10 @@ public class CharacterMovement : MonoBehaviour
             ApplyLowSpeedAcceleration(f, 1f - t);
             ApplySteering(f, t);
         }
-        if (onGround == 1) {
+        if (onGround != 0) {
             ApplyFriction();
             if (f == Vector3.zero) {
-                ApplyDeceleration();
+                ApplyAfkDeceleration();
             }
         }
     }
@@ -75,16 +76,27 @@ public class CharacterMovement : MonoBehaviour
         return ret;
     }
 
+    private float MixDeceleration(float acceleration, Vector3 wantedDirection) {
+        Vector3 currentVelocity = GetComponent<Rigidbody>().velocity;
+        if (currentVelocity == Vector3.zero) {
+            return acceleration;
+        }
+        Vector3 currentDirection = currentVelocity.normalized;
+        float t = Mathf.Clamp01(-Vector3.Dot(wantedDirection, currentDirection));
+        return Mathf.Lerp(acceleration, deceleration * Mathf.Sign(acceleration), t);
+    }
+
     private void ApplyLowSpeedAcceleration(Vector3 forceDirection, float scale) {
-        Vector3 velocity = GetComponent<Rigidbody>().velocity;
-
-        float currentSpeed = velocity.magnitude;
-
-        float accel = baseRawAcceleration * scale;
         Rigidbody rb = GetComponent<Rigidbody>();
-        rb.AddForce(forceDirection * accel, ForceMode.Acceleration);
+        Vector3 currentVelocity = rb.velocity;
 
-        Debug.Log($"acceleration: {accel.ToString("0.00")}, speedRatio: {Mathf.Round(scale * 100f)}%");
+        float currentSpeed = currentVelocity.magnitude;
+
+        float acceleration = baseRawAcceleration * scale;
+        acceleration = MixDeceleration(acceleration, forceDirection);
+        rb.AddForce(forceDirection * acceleration, ForceMode.Acceleration);
+
+        Debug.Log($"acceleration: {acceleration.ToString("0.00")}, speedRatio: {Mathf.Round(scale * 100f)}%");
     }
 
     private void ApplySteering(Vector3 wantedDirection, float scale) {
@@ -112,13 +124,15 @@ public class CharacterMovement : MonoBehaviour
         allowedAngle *= scale;
         float t = Mathf.Clamp01(wantedAngle != 0f ? allowedAngle / wantedAngle : 1f);
 
-        Debug.Log($"{currentVelocity}, {smoothWantedDirection}, {currentSpeed}, {t}");
         rb.velocity = Vector3.Slerp(currentVelocity, smoothWantedDirection * currentSpeed, t);
-        Vector3 acceleration = Vector3.Project(wantedDirection, currentDirection) * steeringForwardAcceleration;
-        rb.AddForce(acceleration * scale, ForceMode.Acceleration);
+        float acceleration = Vector3.Dot(wantedDirection, currentDirection) * steeringForwardAcceleration;
+        acceleration = MixDeceleration(acceleration, wantedDirection);
+        if (onGround != 0 || Vector3.Dot(wantedDirection, currentDirection) < 0f) {
+            rb.AddForce(currentDirection * acceleration * scale, ForceMode.Acceleration);
+        }
         rb.velocity += savedY * Vector3.up;
 
-        Debug.Log($"speed: {currentVelocity.magnitude.ToString("0.00")}, allowedAngle: {allowedAngle.ToString("0.000")}, acceleration: {acceleration.magnitude.ToString("0.0")}");
+        Debug.Log($"speed: {currentVelocity.magnitude.ToString("0.00")}, allowedAngle: {allowedAngle.ToString("0.000")}, acceleration: {acceleration.ToString("0.0")}");
     }
 
     private void ApplyFriction() {
@@ -126,12 +140,12 @@ public class CharacterMovement : MonoBehaviour
         rb.AddForce(-rb.velocity * friction, ForceMode.VelocityChange);
     }
 
-    private void ApplyDeceleration() {
+    private void ApplyAfkDeceleration() {
         Rigidbody rb = GetComponent<Rigidbody>();
-        if (rb.velocity.magnitude <= deceleration * Time.fixedDeltaTime) {
+        if (rb.velocity.magnitude <= afkDeceleration * Time.fixedDeltaTime) {
             rb.velocity = Vector3.zero;
         }
-        rb.AddForce(-rb.velocity.normalized * deceleration, ForceMode.Acceleration);
+        rb.AddForce(-rb.velocity.normalized * afkDeceleration, ForceMode.Acceleration);
     }
 
 }
