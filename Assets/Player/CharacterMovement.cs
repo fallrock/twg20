@@ -5,13 +5,14 @@ using UnityEngine;
 public class CharacterMovement : MonoBehaviour
 {
     public float steeringForwardAcceleration = 5f;
-    public float baseRawAcceleration = 5f;
-    public float rawAccelerationMaxSpeed = 10f;
-    public float steeringMinSpeed = 5f;
-    public float steerAcceleration = 10f;
+    public float baseRawAcceleration = 8f;
+    public float rawAccelerationMaxSpeed = 5f;
+    public float steeringMinSpeed = 3f;
+    public float steerAcceleration = 15f;
     public float jumpImpulse = 5f;
     [Range(0f, 1f)] public float steerSmoothing = 0.95f;
-    public float friction = 0.25f;
+    public float deceleration = 1f;
+    [Range(0f, 1f)] public float friction = 0.005f;
     public Transform directionProvider;
 
     private int onGround = 0;
@@ -43,7 +44,12 @@ public class CharacterMovement : MonoBehaviour
             ApplyLowSpeedAcceleration(f, 1f - t);
             ApplySteering(f, t);
         }
-        ApplyFriction();
+        if (onGround == 1) {
+            ApplyFriction();
+            if (f == Vector3.zero) {
+                ApplyDeceleration();
+            }
+        }
     }
 
     private Vector3 GetWorldSpaceInput() {
@@ -117,6 +123,15 @@ public class CharacterMovement : MonoBehaviour
 
     private void ApplyFriction() {
         Rigidbody rb = GetComponent<Rigidbody>();
-        rb.AddForce(-rb.velocity * friction, ForceMode.Acceleration);
+        rb.AddForce(-rb.velocity * friction, ForceMode.VelocityChange);
     }
+
+    private void ApplyDeceleration() {
+        Rigidbody rb = GetComponent<Rigidbody>();
+        if (rb.velocity.magnitude <= deceleration * Time.fixedDeltaTime) {
+            rb.velocity = Vector3.zero;
+        }
+        rb.AddForce(-rb.velocity.normalized * deceleration, ForceMode.Acceleration);
+    }
+
 }
