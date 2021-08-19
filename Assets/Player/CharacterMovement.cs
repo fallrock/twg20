@@ -6,7 +6,8 @@ public class CharacterMovement : MonoBehaviour
 {
     public float steeringForwardAcceleration = 5f;
     public float baseRawAcceleration = 5f;
-    public float maxSpeed = 5f;
+    public float rawAccelerationMaxSpeed = 10f;
+    public float steeringMinSpeed = 5f;
     public float steerAcceleration = 10f;
     public float jumpImpulse = 5f;
     [Range(0f, 1f)] public float steerSmoothing = 0.95f;
@@ -35,16 +36,18 @@ public class CharacterMovement : MonoBehaviour
     }
 
     private void FixedUpdate() {
-        Vector3 f = GetInputForce();
+        Vector3 f = GetWorldSpaceInput();
         if (f != Vector3.zero) {
-            GetComponent<Rigidbody>().AddForce(f * GetCurrentAcceleration(f));
-            ApplySteering(f);
+            float speed = Vector3.ProjectOnPlane(GetComponent<Rigidbody>().velocity, Vector3.up).magnitude;
+            float t = Mathf.Clamp01(Mathf.InverseLerp(steeringMinSpeed, rawAccelerationMaxSpeed, speed));
+            ApplyLowSpeedAcceleration(f, 1f - t);
+            ApplySteering(f, t);
         }
         ApplyFriction();
     }
 
-    private Vector3 GetInputForce() {
-        Vector3 input = GetMovementInput();
+    private Vector3 GetWorldSpaceInput() {
+        Vector3 input = GetInput();
         input.y = 0f;
         if (input == Vector3.zero) { return Vector3.zero; }
         input.Normalize();
@@ -55,7 +58,7 @@ public class CharacterMovement : MonoBehaviour
         return forceDirection;
     }
 
-    private static Vector3 GetMovementInput() {
+    private static Vector3 GetInput() {
         Vector3 ret = Vector3.zero;
         if (Input.GetKey(KeyCode.W)) { ret.z += 1; }
         if (Input.GetKey(KeyCode.S)) { ret.z -= 1; }
@@ -66,25 +69,19 @@ public class CharacterMovement : MonoBehaviour
         return ret;
     }
 
-    private float GetCurrentAcceleration(Vector3 forceDirection) {
+    private void ApplyLowSpeedAcceleration(Vector3 forceDirection, float scale) {
         Vector3 velocity = GetComponent<Rigidbody>().velocity;
-        Vector3 velocityDirection = velocity.normalized;
 
         float currentSpeed = velocity.magnitude;
-        float speedRatio = Mathf.Clamp(currentSpeed / maxSpeed, 0f, 1f);
 
-        // cos == 1 when facing backwards, -1 when facing forward
-        float cos = -Vector3.Dot(velocityDirection, forceDirection);
-        // float dirRatio = Mathf.Clamp(cos + 1f, 0f, 1f);  // Anything above 90deg is 1
-        float dirRatio = (cos + 1f) / 2f; // 1 backwards, 0 forwards
-        // float mod = 1f - speedRatio * (1f - dirRatio);
-        float mod = 1f - speedRatio;
+        float accel = baseRawAcceleration * scale;
+        Rigidbody rb = GetComponent<Rigidbody>();
+        rb.AddForce(forceDirection * accel, ForceMode.Acceleration);
 
-        Debug.Log($"mod: {Mathf.Round(mod * 100f)}%, speedRatio: {Mathf.Round(currentSpeed / maxSpeed * 100f)}%");
-        return baseRawAcceleration * mod;
+        Debug.Log($"acceleration: {accel.ToString("0.00")}, speedRatio: {Mathf.Round(scale * 100f)}%");
     }
 
-    private void ApplySteering(Vector3 wantedDirection) {
+    private void ApplySteering(Vector3 wantedDirection, float scale) {
         Rigidbody rb = GetComponent<Rigidbody>();
         Vector3 currentVelocity = rb.velocity;
         float savedY = currentVelocity.y;
@@ -104,15 +101,18 @@ public class CharacterMovement : MonoBehaviour
         float currentSpeed = currentVelocity.magnitude;
 
         float allowedAngle = steerAcceleration / currentSpeed;  // Physically accurate
-        allowedAngle *= Mathf.Pow(Mathf.Clamp(Vector3.Dot(wantedDirection, currentDirection) + 1f, 0f, 1f), 0.5f);
-        float t = Mathf.Clamp(allowedAngle / wantedAngle, 0f, 1f);
+        allowedAngle = Mathf.Clamp(allowedAngle, 0f, 90f);  // For scale to work
+        allowedAngle *= Mathf.Pow(Mathf.Clamp01(Vector3.Dot(wantedDirection, currentDirection) + 1f), 0.5f);
+        allowedAngle *= scale;
+        float t = Mathf.Clamp01(wantedAngle != 0f ? allowedAngle / wantedAngle : 1f);
 
+        Debug.Log($"{currentVelocity}, {smoothWantedDirection}, {currentSpeed}, {t}");
         rb.velocity = Vector3.Slerp(currentVelocity, smoothWantedDirection * currentSpeed, t);
         Vector3 acceleration = Vector3.Project(wantedDirection, currentDirection) * steeringForwardAcceleration;
-        rb.AddForce(acceleration, ForceMode.Acceleration);
+        rb.AddForce(acceleration * scale, ForceMode.Acceleration);
         rb.velocity += savedY * Vector3.up;
 
-        // Debug.Log($"speed: {currentVelocity.magnitude.ToString("0.00")}, allowedAngle: {allowedAngle.ToString("0.000")}, acceleration: {acceleration.magnitude.ToString("0.0")}");
+        Debug.Log($"speed: {currentVelocity.magnitude.ToString("0.00")}, allowedAngle: {allowedAngle.ToString("0.000")}, acceleration: {acceleration.magnitude.ToString("0.0")}");
     }
 
     private void ApplyFriction() {
