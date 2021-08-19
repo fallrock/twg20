@@ -5,8 +5,8 @@ using UnityEngine;
 public class Explosion : MonoBehaviour
 {
 
-    public float radius = 7.5f;
-    public float power = 1000.0f;
+    public float radius = 1.0f;
+    public float power = 500.0f;
 
     void Start()
     {
@@ -15,6 +15,8 @@ public class Explosion : MonoBehaviour
     }
 
     public void Explode() {
+        Debug.Log("EXPLOSION");
+
         Vector3 explosionPos = transform.position;
         Collider[] colliders = Physics.OverlapSphere(explosionPos, radius);
         foreach (Collider hit in colliders)

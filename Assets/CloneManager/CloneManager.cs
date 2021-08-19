@@ -6,12 +6,12 @@ public class CloneManager : MonoBehaviour
 {
 
     // Demonstation
-    // void Update()
-    // {
-    //     if (Input.GetKeyDown(KeyCode.O)) {
-    //         InstantiateClones();
-    //     }
-    // }
+    void Update()
+    {
+        if (Input.GetKeyDown(KeyCode.O)) {
+            InstantiateClones();
+        }
+    }
 
     public GameObject clonePrefab;
 
