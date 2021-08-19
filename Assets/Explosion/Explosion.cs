@@ -11,7 +11,8 @@ public class Explosion : MonoBehaviour
     void Start()
     {
         Explode();
-        GameObject.Destroy(gameObject);
+        ///TODO: delete gameObject when animation is done
+        // GameObject.Destroy(gameObject);
     }
 
     public void Explode() {
