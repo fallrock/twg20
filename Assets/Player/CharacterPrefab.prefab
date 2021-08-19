@@ -301,8 +301,11 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 8278d9f8469ca60109555646562b1922, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  baseAcceleration: 5
-  steerAcceleration: 10
+  steeringForwardAcceleration: 5
+  baseRawAcceleration: 8
+  rawAccelerationMaxSpeed: 5
+  steeringMinSpeed: 3
+  steerAcceleration: 15
   jumpImpulse: 5
   steerSmoothing: 0.95
   friction: 0.25
