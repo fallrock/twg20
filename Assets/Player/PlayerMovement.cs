@@ -2,7 +2,7 @@
 using UnityEngine;
 
 
-public class CharacterMovement : MonoBehaviour
+public class PlayerMovement : MonoBehaviour
 {
     public float steeringForwardAcceleration = 5f;
     public float baseRawAcceleration = 8f;
@@ -20,18 +20,18 @@ public class CharacterMovement : MonoBehaviour
 
     private int onGround = 0;
 
-    private void Start() {
+    void Start() {
     }
 
-    private void OnTriggerEnter(Collider other) {
+    void OnTriggerEnter(Collider other) {
         this.onGround++;
     }
 
-    private void OnTriggerExit(Collider other) {
+    void OnTriggerExit(Collider other) {
         this.onGround--;
     }
 
-    private void Update() {
+    void Update() {
         if (this.onGround != 0 && Input.GetKey(KeyCode.Space)) {
             Vector3 velocity = GetComponent<Rigidbody>().velocity;
             velocity.y = this.jumpImpulse;
@@ -39,7 +39,7 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    private void FixedUpdate() {
+    void FixedUpdate() {
         Vector3 f = GetWorldSpaceInput();
         if (f != Vector3.zero) {
             float speed = Vector3.ProjectOnPlane(GetComponent<Rigidbody>().velocity, Vector3.up).magnitude;
@@ -55,7 +55,7 @@ public class CharacterMovement : MonoBehaviour
         }
     }
 
-    private Vector3 GetWorldSpaceInput() {
+    Vector3 GetWorldSpaceInput() {
         Vector3 input = GetInput();
         input.y = 0f;
         if (input == Vector3.zero) { return Vector3.zero; }
@@ -67,7 +67,7 @@ public class CharacterMovement : MonoBehaviour
         return forceDirection;
     }
 
-    private static Vector3 GetInput() {
+    static Vector3 GetInput() {
         Vector3 ret = Vector3.zero;
         if (Input.GetKey(KeyCode.W)) { ret.z += 1; }
         if (Input.GetKey(KeyCode.S)) { ret.z -= 1; }
@@ -78,7 +78,7 @@ public class CharacterMovement : MonoBehaviour
         return ret;
     }
 
-    private float MixDeceleration(float acceleration, Vector3 wantedDirection) {
+    float MixDeceleration(float acceleration, Vector3 wantedDirection) {
         Vector3 currentVelocity = GetComponent<Rigidbody>().velocity;
         if (currentVelocity == Vector3.zero) {
             return acceleration;
@@ -88,7 +88,7 @@ public class CharacterMovement : MonoBehaviour
         return Mathf.Lerp(acceleration, this.deceleration * Mathf.Sign(acceleration), t);
     }
 
-    private void ApplyLowSpeedAcceleration(Vector3 forceDirection, float scale) {
+    void ApplyLowSpeedAcceleration(Vector3 forceDirection, float scale) {
         Rigidbody rb = GetComponent<Rigidbody>();
         Vector3 currentVelocity = rb.velocity;
 
@@ -97,11 +97,9 @@ public class CharacterMovement : MonoBehaviour
         float acceleration = this.baseRawAcceleration * scale;
         acceleration = MixDeceleration(acceleration, forceDirection);
         rb.AddForce(forceDirection * acceleration, ForceMode.Acceleration);
-
-        Debug.Log($"acceleration: {acceleration.ToString("0.00")}, speedRatio: {Mathf.Round(scale * 100f)}%");
     }
 
-    private void ApplySteering(Vector3 wantedDirection, float scale) {
+    void ApplySteering(Vector3 wantedDirection, float scale) {
         Rigidbody rb = GetComponent<Rigidbody>();
         Vector3 currentVelocity = rb.velocity;
         float savedY = currentVelocity.y;
@@ -109,9 +107,10 @@ public class CharacterMovement : MonoBehaviour
 
         Vector3 currentDirection = currentVelocity;
         currentDirection.y = 0f;
-        if (currentDirection != Vector3.zero) {
-            currentDirection.Normalize();
+        if (currentDirection == Vector3.zero) {
+            return;
         }
+        currentDirection.Normalize();
         Vector3 smoothWantedDirection = Vector3.Slerp(wantedDirection, currentDirection, this.steerSmoothing);
 
         var currentRotation = Quaternion.LookRotation(currentDirection);
@@ -133,16 +132,14 @@ public class CharacterMovement : MonoBehaviour
             rb.AddForce(currentDirection * acceleration * scale, ForceMode.Acceleration);
         }
         rb.velocity += savedY * Vector3.up;
-
-        Debug.Log($"speed: {currentVelocity.magnitude.ToString("0.00")}, allowedAngle: {allowedAngle.ToString("0.000")}, acceleration: {acceleration.ToString("0.0")}");
     }
 
-    private void ApplyFriction() {
+    void ApplyFriction() {
         Rigidbody rb = GetComponent<Rigidbody>();
         rb.AddForce(-rb.velocity * this.friction, ForceMode.VelocityChange);
     }
 
-    private void ApplyAfkDeceleration() {
+    void ApplyAfkDeceleration() {
         Rigidbody rb = GetComponent<Rigidbody>();
         if (rb.velocity.magnitude <= this.afkDeceleration * Time.fixedDeltaTime) {
             rb.velocity = Vector3.zero;
