@@ -19,21 +19,20 @@ public class TrajectoryReproducer : MonoBehaviour
     {
         if (!playing) return;
 
-        if (trajectory.trajectory.Count == 0)
+        Trajectory.Point? point =
+            trajectory
+            .GetClosestPoint(Time.time - currentRoundBeginning);
+
+        if (point == null)
         {
             playing = false;
             finished = true;
+            return;
         }
 
-        float localRoundTime = Time.time - currentRoundBeginning;
-        var currentPoint =
-            trajectory.trajectory.FindLast(
-                x => x.time < localRoundTime
-            );
+        ReproducePoint(point.Value);
 
-        ReproducePoint(currentPoint);
-
-        if (currentPoint ==
+        if (point ==
             trajectory.trajectory[trajectory.trajectory.Count - 1])
         {
             playing = false;
