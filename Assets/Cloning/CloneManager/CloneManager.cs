@@ -19,15 +19,15 @@ public class CloneManager : MonoBehaviour
         foreach (var trajectory in clones)
         {
             GameObject clone = GameObject.Instantiate(clonePrefab);
-            clone.transform.SetParent(transform);
 
-                clone.GetComponent<Trajectory>().Set(trajectory);
+            clone.GetComponent<Trajectory>().Set(trajectory);
         }
     }
 
     public void KillAllClones() {
-        foreach (Transform child in transform) {
-            GameObject.Destroy(child.gameObject);
+        GameObject[] clones = GameObject.FindGameObjectsWithTag("Clone");
+        foreach (GameObject clone in clones) {
+            GameObject.Destroy(clone);
         }
     }
 
