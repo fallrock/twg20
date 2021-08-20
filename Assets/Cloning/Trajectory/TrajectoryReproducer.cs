@@ -6,6 +6,9 @@ public class TrajectoryReproducer : MonoBehaviour
 {
     private Trajectory trajectory;
 
+    public bool finished { get; private set; } = false;
+    private bool playing = false;
+
     void Start()
     {
         trajectory = GetComponent<Trajectory>();
@@ -13,28 +16,42 @@ public class TrajectoryReproducer : MonoBehaviour
 
     void FixedUpdate()
     {
+        if (!playing) return;
+
         if (trajectory.trajectory.Count == 0)
         {
-            // Explode();
+            finished = true;
         }
 
         float localRoundTime = Time.time - currentRoundBeginning;
-        var currentPosition =
-            trajectory.FindLast(x => x.Item1 < localRoundTime);
-        transform.position = currentPosition.Item2;
-        if (currentPosition == trajectory[trajectory.Count - 1]) {
-            // Explode();
+        var currentPoint =
+            trajectory.trajectory.FindLast(
+                x => x.time < localRoundTime
+            );
+
+        ReproducePoint(currentPoint);
+
+        if (currentPoint ==
+            trajectory.trajectory[trajectory.trajectory.Count - 1])
+        {
+            finished = true;
         }
 
     }
 
-    public void StartRound(float time) {
-        currentRoundBeginning = Time.time;
-    }
-    public void StartRound() {
-        StartRound(Time.time);
+    private void ReproducePoint(Trajectory.Point point)
+    {
+        transform.position = point.position;
     }
 
-    // [HideInInspector]
+    public void StartReproducing(float time) {
+        currentRoundBeginning = Time.time;
+        finished = false;
+        playing = true;
+    }
+    public void StartReproducing() {
+        StartReproducing(Time.time);
+    }
+
     private float currentRoundBeginning;
 }

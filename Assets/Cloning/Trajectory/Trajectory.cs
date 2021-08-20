@@ -9,14 +9,14 @@ public class Trajectory : MonoBehaviour
         trajectory = new List<Point>();
     }
 
-    public void Put(float time, Vector3 position)
+    public void Put(Point point)
     {
-        trajectory.Add(new Point(time, position));
+        trajectory.Add(point);
     }
 
-    public void Put(Vector3 position)
+    public void Set(List<Point> trajectory)
     {
-        Put(Time.time, position);
+        this.trajectory = new List<Point>(trajectory);
     }
 
     public List<Point> trajectory { get; private set; } =
@@ -24,16 +24,31 @@ public class Trajectory : MonoBehaviour
 
     public struct Point
     {
-        float time { get; set; }
-        Vector3 position { get; set; }
+        public float time { get; set; }
+        public Vector3 position { get; set; }
 
         public Point(float time, Vector3 position)
         {
             this.time = time;
-            this.position = new Vector3(position.x,
-                                        position.y,
-                                        position.z);
+            // this.position = new Vector3(position.x,
+            //                             position.y,
+            //                             position.z);
+            this.position = position;
         }
+
+        public static bool operator==(Point left, Point right)
+        {
+            return
+            (
+                left.time == right.time
+                && left.position == right.position
+            );
+        }
+        public static bool operator!=(Point left, Point right)
+        {
+            return !(left != right);
+        }
+
     }
 
 }

@@ -16,14 +16,12 @@ public class CloneManager : MonoBehaviour
     public GameObject clonePrefab;
 
     public void InstantiateClones() {
-        foreach (var trajectory in clones) {
+        foreach (var trajectory in clones)
+        {
             GameObject clone = GameObject.Instantiate(clonePrefab);
             clone.transform.SetParent(transform);
 
-            var CloneBehaviour = clone.GetComponent<CloneBehaviour>();
-            CloneBehaviour.StartRound();
-            CloneBehaviour.trajectory =
-                new List<(float, Vector3)>(trajectory);
+                clone.GetComponent<Trajectory>().Set(trajectory);
         }
     }
 
@@ -33,10 +31,10 @@ public class CloneManager : MonoBehaviour
         }
     }
 
-    public void Store(List<(float, Vector3)> trajectory) {
-        clones.Add(new List<(float, Vector3)>(trajectory));
+    public void Store(Trajectory trajectory) {
+        clones.Add(new List<Trajectory.Point>(trajectory.trajectory));
     }
 
-    private List<List<(float, Vector3)>> clones
-      = new List<List<(float, Vector3)>>();
+    private List<List<Trajectory.Point>> clones
+      = new List<List<Trajectory.Point>>();
 }
