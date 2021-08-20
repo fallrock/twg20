@@ -9,16 +9,11 @@ public class Cloner : MonoBehaviour
     // Demonstation
     void Update() {
         if (Input.GetKeyDown(KeyCode.F)) {
-            cloneManager.GetComponent<CloneManager>()
+            GameObject
+                .Find("Managers")
+                .GetComponent<CloneManager>()
                 .Store(GetComponent<Trajectory>());
         }
-    }
-
-    private GameObject cloneManager;
-
-    void Start()
-    {
-        cloneManager = GameObject.Find("CloneManager");
     }
 
 }
