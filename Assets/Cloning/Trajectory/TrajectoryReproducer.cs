@@ -8,6 +8,7 @@ public class TrajectoryReproducer : MonoBehaviour
 
     public bool finished { get; private set; } = false;
     private bool playing = false;
+    private float currentRoundBeginning;
 
     void Start()
     {
@@ -20,6 +21,7 @@ public class TrajectoryReproducer : MonoBehaviour
 
         if (trajectory.trajectory.Count == 0)
         {
+            playing = false;
             finished = true;
         }
 
@@ -34,6 +36,7 @@ public class TrajectoryReproducer : MonoBehaviour
         if (currentPoint ==
             trajectory.trajectory[trajectory.trajectory.Count - 1])
         {
+            playing = false;
             finished = true;
         }
 
@@ -46,12 +49,12 @@ public class TrajectoryReproducer : MonoBehaviour
 
     public void StartReproducing(float time) {
         currentRoundBeginning = Time.time;
-        finished = false;
         playing = true;
+        finished = false;
     }
+
     public void StartReproducing() {
         StartReproducing(Time.time);
     }
 
-    private float currentRoundBeginning;
 }
