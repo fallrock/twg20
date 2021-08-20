@@ -19,6 +19,13 @@ public class Trajectory : MonoBehaviour
         this.trajectory = new List<Point>(trajectory);
     }
 
+    public Point? GetClosestPoint(float time)
+    {
+        if (trajectory.Count == 0) return null;
+        Point point = trajectory.FindLast(x => x.time < time);
+        return point;
+    }
+
     public List<Point> trajectory { get; private set; } =
         new List<Point>();
 
