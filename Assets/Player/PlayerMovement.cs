@@ -99,7 +99,6 @@ public class PlayerMovement : MonoBehaviour
         float acceleration = this.baseRawAcceleration * scale;
         acceleration = MixDeceleration(acceleration, forceDirection);
         acceleration *= Mathf.Lerp(0.5f, 1f, Mathf.Pow(Mathf.InverseLerp(0f, this.maxPreciseSpeed, currentSpeed), 2f));
-        Debug.Log(Mathf.InverseLerp(0f, this.maxPreciseSpeed, currentSpeed));
         rb.AddForce(forceDirection * acceleration, ForceMode.Acceleration);
     }
 
