@@ -12,11 +12,11 @@ public class Cloner : MonoBehaviour
     }
 
     // Demonstation
-    // void Update() {
-    //     if (Input.GetKeyDown(KeyCode.Space)) {
-    //         Save();
-    //     }
-    // }
+    void Update() {
+        if (Input.GetKeyDown(KeyCode.F)) {
+            Save();
+        }
+    }
 
     void FixedUpdate()
     {
