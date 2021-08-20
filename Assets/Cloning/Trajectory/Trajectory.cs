@@ -30,12 +30,10 @@ public class Trajectory : MonoBehaviour
         public Point(float time, Vector3 position)
         {
             this.time = time;
-            // this.position = new Vector3(position.x,
-            //                             position.y,
-            //                             position.z);
             this.position = position;
         }
 
+        ///TODO: delete this garbage
         public static bool operator==(Point left, Point right)
         {
             return
