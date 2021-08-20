@@ -4,6 +4,7 @@ using UnityEngine;
 
 public class CloneBehaviour : MonoBehaviour
 {
+    public GameObject explosionPrefab;
 
     void FixedUpdate()
     {
@@ -18,8 +19,10 @@ public class CloneBehaviour : MonoBehaviour
     }
 
     private void Explode() {
-        ///TODO: actual explosion
-        Debug.Log("*Explosion*");
+        GameObject.Instantiate(explosionPrefab,
+                                transform.position,
+                                new Quaternion()
+        );
         GameObject.Destroy(gameObject);
     }
 
