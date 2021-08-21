@@ -1208,6 +1208,10 @@ PrefabInstance:
       propertyPath: m_IsActive
       value: 0
       objectReference: {fileID: 0}
+    - target: {fileID: 2038331596030333707, guid: 21adfc4e6b3f3cb6faf1d24bfdb90736, type: 3}
+      propertyPath: jumpImpulse
+      value: 0
+      objectReference: {fileID: 0}
     - target: {fileID: 3356816343190542282, guid: 21adfc4e6b3f3cb6faf1d24bfdb90736, type: 3}
       propertyPath: m_RootOrder
       value: 2
