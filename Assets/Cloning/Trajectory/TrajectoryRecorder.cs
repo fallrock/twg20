@@ -7,6 +7,10 @@ public class TrajectoryRecorder : MonoBehaviour
     private Trajectory trajectory;
     private float currentRoundBeginning;
 
+    public void ResetRound() {
+        currentRoundBeginning = Time.time;
+    }
+
     void Start()
     {
         trajectory = GetComponent<Trajectory>();
@@ -19,4 +23,5 @@ public class TrajectoryRecorder : MonoBehaviour
                            Time.time - currentRoundBeginning,
                            transform.position));
     }
+
 }
