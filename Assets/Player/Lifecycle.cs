@@ -29,6 +29,7 @@ public class Lifecycle : MonoBehaviour
     }
 
     void Respawn() {
+        clones.KillAllClones();
         clones.InstantiateClones();
         playerCharacter = Instantiate(characterPrefab, transform.position, transform.rotation, transform);
         playerCharacter.GetComponent<PlayerMovement>().directionProvider = camera.transform;
