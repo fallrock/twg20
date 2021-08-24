@@ -97,7 +97,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   sensitivity: 0.5
-  maxScroll: Infinity
+  maxScroll: 5
+  smoothing: 0.9
 --- !u!1 &2038331594825515896
 GameObject:
   m_ObjectHideFlags: 0
