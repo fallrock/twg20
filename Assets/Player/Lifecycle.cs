@@ -4,9 +4,16 @@ using UnityEngine;
 
 public class Lifecycle : MonoBehaviour
 {
-    public GameObject playerCharacter;
-    public Transform playerSpawn;
+    public GameObject characterPrefab;
     public GameObject explosionPrefab;
+    public CameraFollow camera;
+
+    ///TODO remove this, move Explode() into character
+    private GameObject playerCharacter;
+
+    void Start() {
+        Respawn();
+    }
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.Q)) {
@@ -17,17 +24,15 @@ public class Lifecycle : MonoBehaviour
     void Explode() {
         clones.Store(playerCharacter.GetComponent<Trajectory>());
         Instantiate(explosionPrefab, playerCharacter.transform.position, Quaternion.identity);
-        playerCharacter.SetActive(false);
+        Destroy(playerCharacter);
         Invoke("Respawn", 2f);
     }
 
     void Respawn() {
         clones.InstantiateClones();
-        playerCharacter.transform.position = playerSpawn.position;
-        playerCharacter.GetComponent<Rigidbody>().velocity = Vector3.zero;
-        playerCharacter.GetComponent<Trajectory>().Reset();
-        playerCharacter.GetComponent<TrajectoryRecorder>().ResetRound();
-        playerCharacter.SetActive(true);
+        playerCharacter = Instantiate(characterPrefab, transform.position, transform.rotation, transform);
+        playerCharacter.GetComponent<PlayerMovement>().directionProvider = camera.transform;
+        camera.target = playerCharacter.transform;
     }
 
     CloneManager clones {
