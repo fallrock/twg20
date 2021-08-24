@@ -47,7 +47,7 @@ public class TrajectoryReproducer : MonoBehaviour
     }
 
     public void StartReproducing(float time) {
-        currentRoundBeginning = Time.time;
+        currentRoundBeginning = time;
         playing = true;
         finished = false;
     }
