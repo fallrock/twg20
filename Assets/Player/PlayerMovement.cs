@@ -12,7 +12,7 @@ public class PlayerMovement : MonoBehaviour
     public float steeringMinSpeed = 3f;
     public float steerAcceleration = 15f;
     public float jumpImpulse = 5f;
-    public float minWallJumpImpulse = 3f;
+    public float minWallJumpSpeed = 3f;
     public float maxGroundAngle = 60f;
     [Range(0f, 1f)]
     public float steerSmoothing = 0.95f;
@@ -27,8 +27,18 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void OnCollisionEnter(Collision collision) {
-        if (collision.impulse.magnitude >= this.minWallJumpImpulse) {
-            this.onGround = true;
+        if (Input.GetKey(KeyCode.Space)) {
+            Vector3 velocity = collision.relativeVelocity;
+            for (int i = 0; i < collision.contactCount; i++) {
+                Vector3 normal = collision.GetContact(i).normal;
+                Debug.Log($"{velocity.magnitude}, {Vector3.Dot(velocity, normal)}");
+                if (Vector3.Dot(velocity, normal) >= this.minWallJumpSpeed) {
+                    Vector3 currentVelocity = GetComponent<Rigidbody>().velocity;
+                    currentVelocity.y = this.jumpImpulse;
+                    GetComponent<Rigidbody>().velocity = currentVelocity;
+                    return;
+                }
+            }
         }
     }
 
@@ -38,12 +48,12 @@ public class PlayerMovement : MonoBehaviour
             float maxAngleRadians = this.maxGroundAngle / 180f * Mathf.PI;
             if (Vector3.Dot(normal, Vector3.up) >= Mathf.Cos(maxAngleRadians)) {
                 this.onGround = true;
+                return;
             }
         }
     }
 
     void Update() {
-        Debug.Log($"Update {this.onGround}");
         if (this.onGround && Input.GetKey(KeyCode.Space)) {
             Vector3 velocity = GetComponent<Rigidbody>().velocity;
             velocity.y = this.jumpImpulse;
@@ -52,7 +62,6 @@ public class PlayerMovement : MonoBehaviour
     }
 
     void FixedUpdate() {
-        Debug.Log($"FixedUpdate {this.onGround}");
         Vector3 f = GetWorldSpaceInput();
         if (f != Vector3.zero) {
             float speed = Vector3.ProjectOnPlane(GetComponent<Rigidbody>().velocity, Vector3.up).magnitude;
