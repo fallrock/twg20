@@ -108,6 +108,20 @@ MonoBehaviour:
   rotationSpeed: 0.5
   amplitude: 0.15
   speed: 1
+--- !u!64 &4170668287191464075
+MeshCollider:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8127637143423627065}
+  m_Material: {fileID: 0}
+  m_IsTrigger: 1
+  m_Enabled: 1
+  serializedVersion: 4
+  m_Convex: 1
+  m_CookingOptions: 30
+  m_Mesh: {fileID: -2432090755550338912, guid: cc5cb6f675d4df1abb4d056ca155ab1f, type: 3}
 --- !u!1 &8938030330411810226
 GameObject:
   m_ObjectHideFlags: 0
@@ -119,7 +133,7 @@ GameObject:
   - component: {fileID: 8938030330411810227}
   m_Layer: 0
   m_Name: Goal
-  m_TagString: Untagged
+  m_TagString: Goal
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -133,7 +147,7 @@ Transform:
   m_GameObject: {fileID: 8938030330411810226}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0.1, y: 0.1, z: 0.1}
   m_Children:
   - {fileID: 8899388050421413251}
   m_Father: {fileID: 0}
@@ -152,15 +166,15 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cc5cb6f675d4df1abb4d056ca155ab1f, type: 3}
       propertyPath: m_LocalScale.x
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cc5cb6f675d4df1abb4d056ca155ab1f, type: 3}
       propertyPath: m_LocalScale.y
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cc5cb6f675d4df1abb4d056ca155ab1f, type: 3}
       propertyPath: m_LocalScale.z
-      value: 0.1
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: -8679921383154817045, guid: cc5cb6f675d4df1abb4d056ca155ab1f, type: 3}
       propertyPath: m_LocalPosition.x
