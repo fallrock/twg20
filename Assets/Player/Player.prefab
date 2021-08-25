@@ -10,6 +10,7 @@ GameObject:
   m_Component:
   - component: {fileID: 1683379044250326517}
   - component: {fileID: 3037367169372146358}
+  - component: {fileID: 7435446013380801377}
   m_Layer: 0
   m_Name: Player
   m_TagString: Untagged
@@ -47,6 +48,19 @@ MonoBehaviour:
   respawnTime: 2
   characterPrefab: {fileID: 8767932387300758086, guid: 719a2617adabf81ee8a5631e5cdac62b, type: 3}
   playerCamera: {fileID: 2702376614406013250}
+--- !u!114 &7435446013380801377
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 432990930093167826}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: c614a9865bb07f329abca8eb173b1b0f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  clonePrefab: {fileID: 6671651835561617190, guid: ddf145b66ce693360bd69ace37574382, type: 3}
 --- !u!1 &2702376614406013255
 GameObject:
   m_ObjectHideFlags: 0
