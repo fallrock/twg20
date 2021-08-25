@@ -4,56 +4,39 @@ using UnityEngine;
 
 public class TrajectoryReproducer : MonoBehaviour
 {
+    public bool finished { get; private set; } = false;
+
+    private float currentRoundBeginning;
     private Trajectory trajectory;
 
-    public bool finished { get; private set; } = false;
-    private bool playing = false;
-    private float currentRoundBeginning;
-
-    void Start()
-    {
-        trajectory = GetComponent<Trajectory>();
+    public void Initialize(Trajectory trajectory) {
+        this.trajectory = trajectory;
     }
 
-    void FixedUpdate()
-    {
-        if (!playing) return;
+    void Start() {
+        this.currentRoundBeginning = Time.time;
+    }
 
-        Trajectory.Point? point =
-            trajectory
-            .GetClosestPoint(Time.time - currentRoundBeginning);
-
-        if (point == null)
-        {
-            playing = false;
-            finished = true;
+    void Update() {
+        if (this.finished) {  // Not needed
             return;
         }
 
-        ReproducePoint(point.Value);
+        float time = Time.time - this.currentRoundBeginning;
+        float delta = Time.fixedDeltaTime;
+        int i1 = Mathf.FloorToInt(time / delta);
+        int i2 = Mathf.CeilToInt(time / delta);
 
-        if (point ==
-            trajectory.trajectory[trajectory.trajectory.Count - 1])
-        {
-            playing = false;
-            finished = true;
+        if (i2 >= this.trajectory.Count) {
+            this.finished = true;
+            return;
         }
 
-    }
+        Vector3 a = this.trajectory[i1];
+        Vector3 b = this.trajectory[i2];
+        float t = Mathf.InverseLerp(i1, i2, time);
+        Vector3 result = Vector3.Lerp(a, b, t);
 
-    private void ReproducePoint(Trajectory.Point point)
-    {
-        transform.position = point.position;
+        transform.position = result;
     }
-
-    public void StartReproducing(float time) {
-        currentRoundBeginning = time;
-        playing = true;
-        finished = false;
-    }
-
-    public void StartReproducing() {
-        StartReproducing(Time.time);
-    }
-
 }

@@ -18,7 +18,9 @@ public class CameraFollow : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        ///TODO frameRate independency
-        transform.position = Vector3.Lerp(transform.position, target.position, lerpSpeed);
+        if (target) {
+            ///TODO frameRate independency
+            transform.position = Vector3.Lerp(transform.position, target.position, lerpSpeed);
+        }
     }
 }
