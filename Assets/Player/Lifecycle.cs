@@ -7,7 +7,7 @@ public class Lifecycle : MonoBehaviour
     public float respawnTime = 2f;
 
     public GameObject characterPrefab;
-    public CameraFollow camera;
+    public CameraFollow playerCamera;
 
     void Start() {
         RespawnImmediately();
@@ -24,10 +24,10 @@ public class Lifecycle : MonoBehaviour
         var clones = GameObject.Find("Managers").GetComponent<CloneManager>();
         clones.KillAllClones();
         clones.InstantiateClones();
-        var character = Instantiate(characterPrefab, transform.position, transform.rotation, transform);
-        character.GetComponent<PlayerMovement>().directionProvider = camera.transform;
+        var character = Instantiate(this.characterPrefab, transform.position, transform.rotation, transform);
+        character.GetComponent<PlayerMovement>().directionProvider = this.playerCamera.transform;
         character.GetComponent<ExplosiveController>().lifecycle = this;
-        camera.target = character.transform;
+        this.playerCamera.target = character.transform;
     }
 
 }

@@ -1,26 +1,16 @@
 using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using Trajectory = System.Collections.Generic.List<UnityEngine.Vector3>;
 
 public class CloneManager : MonoBehaviour
 {
-
-    // Demonstation
-    void Update()
-    {
-        if (Input.GetKeyDown(KeyCode.O)) {
-            InstantiateClones();
-        }
-    }
-
     public GameObject clonePrefab;
 
     public void InstantiateClones() {
-        foreach (var trajectory in clones)
-        {
-            GameObject clone = GameObject.Instantiate(clonePrefab);
-
-            clone.GetComponent<Trajectory>().Set(trajectory);
+        foreach (var trajectory in trajectories) {
+            GameObject clone = GameObject.Instantiate(this.clonePrefab);
+            clone.GetComponent<TrajectoryReproducer>().Initialize(trajectory);
         }
     }
 
@@ -32,9 +22,8 @@ public class CloneManager : MonoBehaviour
     }
 
     public void Store(Trajectory trajectory) {
-        clones.Add(new List<Trajectory.Point>(trajectory.trajectory));
+        trajectories.Add(trajectory);
     }
 
-    private List<List<Trajectory.Point>> clones
-      = new List<List<Trajectory.Point>>();
+    private List<Trajectory> trajectories = new List<Trajectory>();
 }
