@@ -4,7 +4,6 @@ using UnityEngine;
 
 public class ExplosionLightIntensityController : MonoBehaviour
 {
-    public float duration = 2.0f;
     public float intensityMultiplier = 1.0f;
 
     private float startTime;
@@ -18,6 +17,8 @@ public class ExplosionLightIntensityController : MonoBehaviour
     {
         Light light = GetComponent<Light>();
         float x = Time.time - startTime;
-        light.intensity = intensityMultiplier * (duration - x*x);
+        light.intensity = intensityMultiplier * (
+            1.0f / Mathf.Sin(x + 0.05f) - 2.0f
+        );
     }
 }
