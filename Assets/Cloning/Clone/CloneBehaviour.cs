@@ -6,23 +6,17 @@ public class CloneBehaviour : MonoBehaviour
 {
     public GameObject explosionPrefab;
 
-    void Start()
-    {
-        GetComponent<TrajectoryReproducer>().StartReproducing();
+    void Start() {
     }
 
-    void FixedUpdate()
-    {
+    void FixedUpdate() {
         if (GetComponent<TrajectoryReproducer>().finished) {
             Explode();
         }
     }
 
     private void Explode() {
-        GameObject.Instantiate(explosionPrefab,
-                                transform.position,
-                                new Quaternion()
-        );
+        GameObject.Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         GameObject.Destroy(gameObject);
     }
 
