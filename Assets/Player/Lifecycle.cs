@@ -4,42 +4,30 @@ using UnityEngine;
 
 public class Lifecycle : MonoBehaviour
 {
+    public float respawnTime = 2f;
+
     public GameObject characterPrefab;
-    public GameObject explosionPrefab;
     public CameraFollow camera;
 
-    ///TODO remove this, move Explode() into character
-    private GameObject playerCharacter;
-
     void Start() {
-        Respawn();
+        RespawnImmediately();
     }
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Q)) {
-            Explode();
-        }
     }
 
-    void Explode() {
-        clones.Store(playerCharacter.GetComponent<Trajectory>());
-        Instantiate(explosionPrefab, playerCharacter.transform.position, Quaternion.identity);
-        Destroy(playerCharacter);
-        Invoke("Respawn", 2f);
+    public void RespawnLater() {
+        Invoke("RespawnImmediately", respawnTime);
     }
 
-    void Respawn() {
+    public void RespawnImmediately() {
+        var clones = GameObject.Find("Managers").GetComponent<CloneManager>();
         clones.KillAllClones();
         clones.InstantiateClones();
-        playerCharacter = Instantiate(characterPrefab, transform.position, transform.rotation, transform);
-        playerCharacter.GetComponent<PlayerMovement>().directionProvider = camera.transform;
-        camera.target = playerCharacter.transform;
-    }
-
-    CloneManager clones {
-        get {
-            return GameObject.Find("Managers").GetComponent<CloneManager>();
-        }
+        var character = Instantiate(characterPrefab, transform.position, transform.rotation, transform);
+        character.GetComponent<PlayerMovement>().directionProvider = camera.transform;
+        character.GetComponent<ExplosiveController>().lifecycle = this;
+        camera.target = character.transform;
     }
 
 }
