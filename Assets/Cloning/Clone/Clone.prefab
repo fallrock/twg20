@@ -10,7 +10,6 @@ GameObject:
   m_Component:
   - component: {fileID: 6671651835561617191}
   - component: {fileID: 6671651835561617184}
-  - component: {fileID: 4816309397924088855}
   - component: {fileID: 8954958617124635908}
   m_Layer: 0
   m_Name: Clone
@@ -48,18 +47,6 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionPrefab: {fileID: 1398384210024287389, guid: 4b62465aa5b08aca3bbcb7b7daf6bf0d, type: 3}
---- !u!114 &4816309397924088855
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 6671651835561617190}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 3d921cbfb34e562b6b854785b6a3763c, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &8954958617124635908
 MonoBehaviour:
   m_ObjectHideFlags: 0

@@ -44,9 +44,9 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ed995fbc234b521fba5ef5b811c5dce1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  respawnTime: 2
   characterPrefab: {fileID: 8767932387300758086, guid: 719a2617adabf81ee8a5631e5cdac62b, type: 3}
-  explosionPrefab: {fileID: 1398384210024287389, guid: 4b62465aa5b08aca3bbcb7b7daf6bf0d, type: 3}
-  camera: {fileID: 2702376614406013250}
+  playerCamera: {fileID: 2702376614406013250}
 --- !u!1 &2702376614406013255
 GameObject:
   m_ObjectHideFlags: 0
