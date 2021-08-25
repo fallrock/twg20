@@ -6,6 +6,7 @@ TagManager:
   tags:
   - Clone
   - Goal
+  - Player.Character
   layers:
   - Default
   - TransparentFX

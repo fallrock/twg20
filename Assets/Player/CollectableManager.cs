@@ -6,29 +6,24 @@ public class CollectableManager : MonoBehaviour
 {
     public ulong collected = 0;
     public ulong toCollect = 1;
-
-    public void Reset()
-    {
-        collected = 0;
-    }
+    public bool won = false;
 
     public void Collect()
     {
+        if (won) return;
+
         collected++;
+        CheckWin();
+    }
+
+    private void CheckWin()
+    {
         if (collected >= toCollect)
         {
+            won = true;
+
             ///TODO: win the fucking game
             Debug.Log("won");
         }
-    }
-
-    private void OnTriggerEnter(Collider other)
-    {
-        Debug.Log("trigger entered");
-    }
-
-    void Update()
-    {
-        
     }
 }
