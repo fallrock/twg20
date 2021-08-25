@@ -9,6 +9,11 @@ public class Lifecycle : MonoBehaviour
     public GameObject characterPrefab;
     public CameraFollow playerCamera;
 
+    public CloneManager clones
+    {
+        get { return GetComponent<CloneManager>(); }
+    }
+
     void Start() {
         RespawnImmediately();
     }
@@ -21,7 +26,6 @@ public class Lifecycle : MonoBehaviour
     }
 
     public void RespawnImmediately() {
-        var clones = GameObject.Find("Managers").GetComponent<CloneManager>();
         clones.KillAllClones();
         clones.InstantiateClones();
         var character = Instantiate(this.characterPrefab, transform.position, transform.rotation, transform);
