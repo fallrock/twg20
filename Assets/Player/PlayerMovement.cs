@@ -12,6 +12,8 @@ public class PlayerMovement : MonoBehaviour
     public float steeringMinSpeed = 3f;
     public float steerAcceleration = 15f;
     public float jumpImpulse = 5f;
+    public float minWallJumpSpeed = 3f;
+    public float maxGroundAngle = 60f;
     [Range(0f, 1f)]
     public float steerSmoothing = 0.95f;
     public float afkDeceleration = 1f;
@@ -19,21 +21,39 @@ public class PlayerMovement : MonoBehaviour
     public float friction = 0.005f;
     public Transform directionProvider;
 
-    private int onGround = 0;
+    private bool onGround = false;
 
     void Start() {
     }
 
-    void OnTriggerEnter(Collider other) {
-        this.onGround++;
+    void OnCollisionEnter(Collision collision) {
+        if (Input.GetKey(KeyCode.Space)) {
+            Vector3 velocity = collision.relativeVelocity;
+            for (int i = 0; i < collision.contactCount; i++) {
+                Vector3 normal = collision.GetContact(i).normal;
+                if (Vector3.Dot(velocity, normal) >= this.minWallJumpSpeed) {
+                    Vector3 currentVelocity = GetComponent<Rigidbody>().velocity;
+                    currentVelocity.y = this.jumpImpulse;
+                    GetComponent<Rigidbody>().velocity = currentVelocity;
+                    return;
+                }
+            }
+        }
     }
 
-    void OnTriggerExit(Collider other) {
-        this.onGround--;
+    void OnCollisionStay(Collision collision) {
+        for (int i = 0; i < collision.contactCount; i++) {
+            Vector3 normal = collision.GetContact(i).normal;
+            float maxAngleRadians = this.maxGroundAngle / 180f * Mathf.PI;
+            if (Vector3.Dot(normal, Vector3.up) >= Mathf.Cos(maxAngleRadians)) {
+                this.onGround = true;
+                return;
+            }
+        }
     }
 
     void Update() {
-        if (this.onGround != 0 && Input.GetKey(KeyCode.Space)) {
+        if (this.onGround && Input.GetKey(KeyCode.Space)) {
             Vector3 velocity = GetComponent<Rigidbody>().velocity;
             velocity.y = this.jumpImpulse;
             GetComponent<Rigidbody>().velocity = velocity;
@@ -48,12 +68,13 @@ public class PlayerMovement : MonoBehaviour
             ApplyLowSpeedAcceleration(f, 1f - t);
             ApplySteering(f, t);
         }
-        if (this.onGround != 0) {
+        if (this.onGround) {
             ApplyFriction();
             if (f == Vector3.zero) {
                 ApplyAfkDeceleration();
             }
         }
+        onGround = false;
     }
 
     Vector3 GetWorldSpaceInput() {
@@ -131,7 +152,7 @@ public class PlayerMovement : MonoBehaviour
         rb.velocity = Vector3.Slerp(currentVelocity, smoothWantedDirection * currentSpeed, t);
         float acceleration = Vector3.Dot(wantedDirection, currentDirection) * this.steeringForwardAcceleration;
         acceleration = MixDeceleration(acceleration, wantedDirection);
-        if (this.onGround != 0 || Vector3.Dot(wantedDirection, currentDirection) < 0f) {
+        if (this.onGround || Vector3.Dot(wantedDirection, currentDirection) < 0f) {
             rb.AddForce(currentDirection * acceleration * scale, ForceMode.Acceleration);
         }
         rb.velocity += savedY * Vector3.up;
