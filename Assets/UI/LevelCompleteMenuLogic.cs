@@ -5,8 +5,13 @@ using UnityEngine.SceneManagement;
 
 public class LevelCompleteMenuLogic : MonoBehaviour
 {
+    private int currentScene { get { return SceneManager.GetActiveScene().buildIndex; } }
+
+    public void NextLevel() {
+        SceneManager.LoadScene(currentScene + 1);
+    }
+
     public void Restart() {
-        int currentScene = SceneManager.GetActiveScene().buildIndex;
         SceneManager.LoadScene(currentScene);
     }
 
