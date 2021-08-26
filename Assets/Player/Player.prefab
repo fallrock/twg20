@@ -93,6 +93,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   levelCompleteUI: {fileID: 4671344152839335935}
+  escapeUI: {fileID: 8474637903424091047}
   cameraControls: {fileID: 0}
   playerMovement: {fileID: 0}
 --- !u!1 &2702376614406013255
@@ -396,6 +397,11 @@ PrefabInstance:
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 29a40fee5f96d0283bd11ffa58933040, type: 3}
+--- !u!1 &8474637903424091047 stripped
+GameObject:
+  m_CorrespondingSourceObject: {fileID: 6532745425079498175, guid: 29a40fee5f96d0283bd11ffa58933040, type: 3}
+  m_PrefabInstance: {fileID: 3401078773377697304}
+  m_PrefabAsset: {fileID: 0}
 --- !u!4 &6189467836840820241 stripped
 Transform:
   m_CorrespondingSourceObject: {fileID: 8851375555243063305, guid: 29a40fee5f96d0283bd11ffa58933040, type: 3}
