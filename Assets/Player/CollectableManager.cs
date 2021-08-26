@@ -6,13 +6,11 @@ public class CollectableManager : MonoBehaviour
 {
     public ulong collected = 0;
     public ulong toCollect = 1;
-    public bool won { get; private set; } = false;
-    public GameObject levelCompleteUI;
+
+    public WinLogic winLogic;
 
     public void Collect()
     {
-        if (won) return;
-
         collected++;
         CheckWin();
     }
@@ -21,10 +19,7 @@ public class CollectableManager : MonoBehaviour
     {
         if (collected >= toCollect)
         {
-            won = true;
-
-            levelCompleteUI.SetActive(true);
-            Cursor.lockState = CursorLockMode.None;
+            winLogic.Win();
         }
     }
 }
