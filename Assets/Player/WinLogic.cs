@@ -5,6 +5,7 @@ using UnityEngine;
 public class WinLogic : MonoBehaviour
 {
     public GameObject levelCompleteUI;
+    public GameObject escapeUI;
     public CameraControls cameraControls;
     public PlayerMovement playerMovement;
 
@@ -12,6 +13,7 @@ public class WinLogic : MonoBehaviour
 
     public void Win() {
         levelCompleteUI.SetActive(true);
+        escapeUI.SetActive(false);
         Cursor.lockState = CursorLockMode.None;
         cameraControls.enabled = false;
         playerMovement.enabled = false;
