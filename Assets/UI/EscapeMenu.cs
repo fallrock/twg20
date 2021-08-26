@@ -8,6 +8,7 @@ public class EscapeMenu : MonoBehaviour
     public GameObject ui;
 
     private CursorLockMode savedMode;
+    private int currentScene { get { return SceneManager.GetActiveScene().buildIndex; } }
 
     void Update() {
         if (Input.GetKeyDown(KeyCode.Escape)) {
@@ -22,6 +23,11 @@ public class EscapeMenu : MonoBehaviour
     public void QuitToMain() {
         Time.timeScale = 1f;
         SceneManager.LoadScene(0);
+    }
+
+    public void Restart() {
+        Time.timeScale = 1f;
+        SceneManager.LoadScene(currentScene);
     }
 
     public void Pause() {
