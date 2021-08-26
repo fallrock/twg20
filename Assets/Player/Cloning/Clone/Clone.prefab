@@ -47,6 +47,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   explosionPrefab: {fileID: 1398384210024287389, guid: 4b62465aa5b08aca3bbcb7b7daf6bf0d, type: 3}
+  indicatorPrefab: {fileID: 978100076147839804, guid: 7bf9f1235d05ea739bf8759eb6b23583, type: 3}
 --- !u!114 &8954958617124635908
 MonoBehaviour:
   m_ObjectHideFlags: 0
