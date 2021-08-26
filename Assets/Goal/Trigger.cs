@@ -18,10 +18,9 @@ public class Trigger : MonoBehaviour
 
         if (go.tag == "Player.Character")
         {
-            go
-                .GetComponent<CollectableManager>()
-                .Collect();
-
+            ///TODO make hierarchy independent
+            Transform player = go.transform.parent;
+            player.GetComponent<CollectableManager>().Collect();
             GetDestroyed();
         }
     }

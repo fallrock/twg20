@@ -111,7 +111,6 @@ GameObject:
   - component: {fileID: 8767932387300758095}
   - component: {fileID: 6288301079197304652}
   - component: {fileID: 1205607069279540093}
-  - component: {fileID: 4365077191780419141}
   - component: {fileID: 1460851597549503789}
   m_Layer: 0
   m_Name: Character
@@ -335,21 +334,6 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifecycle: {fileID: 0}
   explosionPrefab: {fileID: 1398384210024287389, guid: 4b62465aa5b08aca3bbcb7b7daf6bf0d, type: 3}
---- !u!114 &4365077191780419141
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8767932387300758086}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: 05758acf9056bd9bba999d19bb648974, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
-  collected: 0
-  toCollect: 1
-  won: 0
 --- !u!114 &1460851597549503789
 MonoBehaviour:
   m_ObjectHideFlags: 0

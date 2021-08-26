@@ -6,12 +6,11 @@ public class CollectableManager : MonoBehaviour
 {
     public ulong collected = 0;
     public ulong toCollect = 1;
-    public bool won = false;
+
+    public WinLogic winLogic;
 
     public void Collect()
     {
-        if (won) return;
-
         collected++;
         CheckWin();
     }
@@ -20,10 +19,7 @@ public class CollectableManager : MonoBehaviour
     {
         if (collected >= toCollect)
         {
-            won = true;
-
-            ///TODO: win the fucking game
-            Debug.Log("won");
+            winLogic.Win();
         }
     }
 }
