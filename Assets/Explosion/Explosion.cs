@@ -28,7 +28,7 @@ public class Explosion : MonoBehaviour
             if (timer != null)
             {
                 if (!timer.Ready) continue;
-                timer.Reset();
+                timer.Set();
             }
 
             rb.AddExplosionForce(power, explosionPos, radius);

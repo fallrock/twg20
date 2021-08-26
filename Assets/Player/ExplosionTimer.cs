@@ -4,7 +4,7 @@ using UnityEngine;
 
 public class ExplosionTimer : MonoBehaviour
 {
-    public float duration = 5.0f;
+    public float duration = 2.0f;
 
     private float lastExplosion;
 
@@ -16,12 +16,18 @@ public class ExplosionTimer : MonoBehaviour
     void Start()
     {
         // spawn explosions allowed
-        lastExplosion = -duration;
+        Reset();
     }
 
-    public void Reset()
+    public void Set()
     {
         lastExplosion = Time.time;
+    }
+
+    // Make it available now
+    public void Reset()
+    {
+        lastExplosion = Time.time - duration;
     }
 
 }
