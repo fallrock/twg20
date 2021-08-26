@@ -31,7 +31,6 @@ public class PlayerMovement : MonoBehaviour
             Vector3 velocity = collision.relativeVelocity;
             for (int i = 0; i < collision.contactCount; i++) {
                 Vector3 normal = collision.GetContact(i).normal;
-                Debug.Log($"{velocity.magnitude}, {Vector3.Dot(velocity, normal)}");
                 if (Vector3.Dot(velocity, normal) >= this.minWallJumpSpeed) {
                     Vector3 currentVelocity = GetComponent<Rigidbody>().velocity;
                     currentVelocity.y = this.jumpImpulse;

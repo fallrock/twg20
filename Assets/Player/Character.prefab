@@ -105,7 +105,6 @@ GameObject:
   m_Component:
   - component: {fileID: 8767932387300758081}
   - component: {fileID: 8767932387300758084}
-  - component: {fileID: 8767932387300758094}
   - component: {fileID: 8767932387300758080}
   - component: {fileID: 8767932387300758085}
   - component: {fileID: 8197384361753409357}
@@ -147,19 +146,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &8767932387300758094
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8767932387300758086}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.45
-  m_Center: {x: 0, y: -0.1, z: 0}
 --- !u!54 &8767932387300758080
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -196,6 +182,8 @@ MonoBehaviour:
   steeringMinSpeed: 3
   steerAcceleration: 15
   jumpImpulse: 5
+  minWallJumpSpeed: 4
+  maxGroundAngle: 60
   steerSmoothing: 0.95
   afkDeceleration: 1
   friction: 0.005
@@ -316,7 +304,7 @@ TrailRenderer:
     textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0
-  m_MinVertexDistance: 0.1
+  m_MinVertexDistance: 0.01
   m_Autodestruct: 0
   m_Emitting: 1
 --- !u!114 &6288301079197304652
