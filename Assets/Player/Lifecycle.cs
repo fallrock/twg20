@@ -31,6 +31,8 @@ public class Lifecycle : MonoBehaviour
         var character = Instantiate(this.characterPrefab, transform.position, transform.rotation, transform);
         character.GetComponent<PlayerMovement>().directionProvider = this.playerCamera.transform;
         character.GetComponent<ExplosiveController>().lifecycle = this;
+        GetComponent<WinLogic>().playerMovement = character.GetComponent<PlayerMovement>();
+        GetComponent<WinLogic>().cameraControls = this.playerCamera.GetComponent<CameraControls>();
         this.playerCamera.target = character.transform;
     }
 
