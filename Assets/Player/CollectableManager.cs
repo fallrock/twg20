@@ -6,7 +6,8 @@ public class CollectableManager : MonoBehaviour
 {
     public ulong collected = 0;
     public ulong toCollect = 1;
-    public bool won = false;
+    public bool won { get; private set; } = false;
+    public GameObject levelCompleteUI;
 
     public void Collect()
     {
@@ -22,8 +23,8 @@ public class CollectableManager : MonoBehaviour
         {
             won = true;
 
-            ///TODO: win the fucking game
-            Debug.Log("won");
+            levelCompleteUI.SetActive(true);
+            Cursor.lockState = CursorLockMode.None;
         }
     }
 }
