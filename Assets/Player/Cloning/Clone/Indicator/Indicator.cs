@@ -9,23 +9,32 @@ public class Indicator : MonoBehaviour
     public float rotationFactor = 1.0f;
     public float scaleFactor = 1.0f;
 
+    private float endTime;
+    private Vector3 originalScale;
+
     public void Initialize(float endTime)
     {
         this.endTime = Time.time + endTime;
     }
 
-    private float endTime;
+    void Start()
+    {
+        originalScale = transform.localScale;
+    }
 
     void Update()
     {
         float x = Time.time;
         float start = endTime - duration;
 
-        float scale = Step(0, x - start) * Step(x - start, duration) * (1 - Mathf.Pow((( x - start) / duration), 2));
+        float y = Step(0, x - start) * Step(x - start, duration) * Mathf.Sin(Mathf.Pow((x - start) / duration, 8.0f) * Mathf.PI);
 
-        scale *= scaleFactor;
+        float scale = y * scaleFactor;
 
-        transform.localScale = new Vector3(scale, transform.localScale.y, scale);
+        Vector3 newScale = new Vector3(originalScale.x * scale, originalScale.y, originalScale.z * scale);
+        transform.localScale = newScale;
+
+        transform.Rotate(new Vector3(0, y * rotationFactor, 0));
     }
 
     private float Step(float a, float b)
