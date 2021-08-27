@@ -5,6 +5,10 @@ using UnityEngine;
 public class Checkpoint : MonoBehaviour
 {
     public Vector3 respawnOffset;
+    public Vector3 respawnPoint
+    {
+        get { return transform.position + respawnOffset; }
+    }
 
     private void OnTriggerEnter(Collider other)
     {
@@ -15,8 +19,7 @@ public class Checkpoint : MonoBehaviour
 
         if (checkpoint != null)
         {
-            Vector3 position = transform.position + respawnOffset;
-            checkpoint.Save(position);
+            checkpoint.Save(gameObject);
         }
     }
 }

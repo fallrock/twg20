@@ -12,22 +12,35 @@ public class CheckpointCharacter : MonoBehaviour
         }
     }
 
-    public void Save(Vector3 position)
+    public void Save(GameObject checkpoint)
+    {
+        if (checkpoint
+            .GetComponent<Collider>()
+            .bounds
+            .Contains(player.transform.position))
+        { return; }
+
+        Vector3 position =
+            checkpoint
+            .GetComponent<Checkpoint>()
+            .respawnPoint;
+
+        MovePlayer(position);
+
+        ClearClones();
+    }
+
+    private void MovePlayer(Vector3 position)
     {
         Vector3 characterPosition = transform.position;
 
         player.transform.position = position;
         transform.position = characterPosition;
-
-        ClearClones();
     }
 
     private void ClearClones()
     {
         gameObject.GetComponent<TrajectoryRecorder>().Reset();
-        // unfortunately, it kills all previous clones
-        // everytime player respawns
-        // player.GetComponent<CloneManager>().Clear();
-        ///TODO: fix it
+        player.GetComponent<CloneManager>().Clear();
     }
 }
