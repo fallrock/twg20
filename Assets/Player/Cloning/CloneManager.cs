@@ -24,5 +24,9 @@ public class CloneManager : MonoBehaviour
         trajectories.Add(trajectory);
     }
 
+    public void Clear() {
+        trajectories.Clear();
+    }
+
     private List<Trajectory> trajectories = new List<Trajectory>();
 }
