@@ -6,7 +6,9 @@ public class CubeShaderHelper : MonoBehaviour
 {
     void Start() {
         float scale = transform.lossyScale.x;
-        GetComponent<Renderer>().material.SetFloat("_Scale", scale);
+        var renderer = GetComponent<Renderer>();
+        renderer.material.SetFloat("_Scale", scale);
+        // renderer.material.SetColor("_Color", Random.ColorHSV(0f,1f,1f,1f,1f,1f));
     }
 
     void Update() {
