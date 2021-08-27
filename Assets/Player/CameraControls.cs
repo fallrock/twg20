@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CameraControls : MonoBehaviour
 {
-    public float mouseSensitivity = 2f;
-    public float mouseSmoothing = 4f;
+    public float mouseSensitivity = 6f;
+    public float mouseSmoothing = 3f;
 
     private float clampInDegreesY = 179f;
     private Vector2 _mouseAbsolute;
@@ -21,7 +21,7 @@ public class CameraControls : MonoBehaviour
 
     void Update() {
         Vector2 input = new Vector2(Input.GetAxisRaw("Mouse X"), Input.GetAxisRaw("Mouse Y"));
-        input *= mouseSensitivity * mouseSmoothing;
+        input *= mouseSensitivity;
         float t = 1f - Mathf.Pow(1f - 1f / mouseSmoothing, Time.deltaTime * 60f);
         _smoothMouse = Vector3.Lerp(_smoothMouse, input, t);
         _mouseAbsolute += _smoothMouse * Time.deltaTime * 60f;
