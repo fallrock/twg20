@@ -3,7 +3,8 @@ Shader "Unlit/CubeShader"
 {
     Properties
     {
-        _MainTex ("Texture", 2D) = "white" {}
+        _Color ("Color", Color) = (1,1,1,1)
+        _Scale ("Scale", Float) = 1
     }
     SubShader
     {
@@ -36,8 +37,8 @@ Shader "Unlit/CubeShader"
                 float3 viewPos : TEXCOORD2;
             };
 
-            sampler2D _MainTex;
-            float4 _MainTex_ST;
+            fixed4 _Color;
+            float _Scale;
 
             // Transforms normal from object to view space
             inline float3 myObjectToViewNormal( in float3 norm )
@@ -49,7 +50,7 @@ Shader "Unlit/CubeShader"
             {
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
-                o.uv = TRANSFORM_TEX(v.uv, _MainTex);
+                o.uv = v.uv;
                 o.viewNormal = myObjectToViewNormal(v.normal);
                 o.viewPos = UnityObjectToViewPos(v.vertex);
                 UNITY_TRANSFER_FOG(o,o.vertex);
@@ -65,34 +66,32 @@ Shader "Unlit/CubeShader"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                // sample the texture
-                fixed4 col = tex2D(_MainTex, i.uv);
-
                 fixed2 st = i.uv;
-                st = frac(st * 48);
+                st = frac(st * _Scale * 3);
+                // st = frac(st * 2);
                 st = st * 2 - 1;
 
-                fixed dst = length(i.viewPos) / 2;
-
-                fixed normCos = dot(normalize(i.viewNormal), normalize(-i.viewPos));
-                fixed c = 0.025;
-                fixed d = 0.025;
-                fixed md = pow(dst, 0.75) / pow(normCos, 0.75);
-                d *= md;
-                // c *= pow(md, 0.5);
+                fixed dst = length(i.viewPos);
 
                 fixed t = 0.0;
-                t += drawLine(st.x, c, d);
-                t += drawLine(st.y, c, d);
-
                 fixed m = max(abs(st.x), abs(st.y));
-                // t *= step(m, 0.25);
+                fixed m2 = 1-min(abs(st.x), abs(st.y));
 
+                t = m + 0.025;
+                t -= pow(m2, 2.0);
                 t = clamp(t, 0, 1);
-                // t /= dst;
-                // t *= 1 - (length(i.viewPos) / 30);
 
-                col = fixed4(t, t, t, 1.0);
+                fixed normCos = dot(normalize(i.viewNormal), normalize(-i.viewPos));
+                fixed dstmod = 0.02*dst*dst + 0.2*dst + 0.0;
+                dstmod *= 0.01;
+                fixed md = dstmod / normCos;
+                t = pow(t, 1/md);
+
+                t *= pow(1 - dstmod / (dstmod + 0.2), 1 / normCos);
+
+                // t = pow(t, 2);
+
+                fixed4 col = fixed4(t, t, t, 1.0);
                 // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return col;
