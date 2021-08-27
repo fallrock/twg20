@@ -20,7 +20,8 @@ public class ScrollZoom : MonoBehaviour
     void Update() {
         totalScroll += -Input.mouseScrollDelta.y * sensitivity;
         totalScroll = Mathf.Clamp(totalScroll, 0f, maxScroll);
-        totalScrollSmooth = Mathf.Lerp(totalScrollSmooth, totalScroll, 1f - smoothing);
+        float t = 1f - Mathf.Pow(smoothing, Time.deltaTime * 60f);
+        totalScrollSmooth = Mathf.Lerp(totalScrollSmooth, totalScroll, t);
         transform.localPosition = initialLocalPosition * totalScrollSmooth;
         if (Input.GetKey(KeyCode.Mouse2)) {
             totalScroll = 1f;
