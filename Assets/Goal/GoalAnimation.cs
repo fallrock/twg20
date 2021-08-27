@@ -4,6 +4,8 @@ using UnityEngine;
 
 public class GoalAnimation : MonoBehaviour
 {
+    public GameObject model;
+
     public float rotationSpeed = 5.0f;
 
     public float amplitude = 5.0f;
@@ -11,14 +13,14 @@ public class GoalAnimation : MonoBehaviour
 
     void FixedUpdate()
     {
-        transform.Rotate(new Vector3(0, rotationSpeed, 0));
+        model.transform.Rotate(new Vector3(0, rotationSpeed, 0));
 
         // y = y0 + amplitude * Mathf.Sin(speed * Time.time);
         // derivative:
         float deltaY =
             amplitude * speed * Mathf.Cos(speed * Time.time)
             * Time.deltaTime;
-        transform.position += new Vector3(0, deltaY, 0);
+        model.transform.position += new Vector3(0, deltaY, 0);
     }
 
 }
