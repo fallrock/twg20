@@ -152,7 +152,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5003942648366538165, guid: c29446fbb1c9f58208cfe9f961116cc1, type: 3}
       propertyPath: m_LocalPosition.z
-      value: 23.75
+      value: 23.25
       objectReference: {fileID: 0}
     - target: {fileID: 5003942648366538165, guid: c29446fbb1c9f58208cfe9f961116cc1, type: 3}
       propertyPath: m_LocalRotation.w
@@ -184,7 +184,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5246288815004915669, guid: c29446fbb1c9f58208cfe9f961116cc1, type: 3}
       propertyPath: m_Name
-      value: Wall_Floor (2)
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 5246288815004915669, guid: c29446fbb1c9f58208cfe9f961116cc1, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -253,7 +253,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5246288815004915669, guid: c29446fbb1c9f58208cfe9f961116cc1, type: 3}
       propertyPath: m_Name
-      value: Wall_Floor
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 5246288815004915669, guid: c29446fbb1c9f58208cfe9f961116cc1, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -510,7 +510,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5246288815004915669, guid: c29446fbb1c9f58208cfe9f961116cc1, type: 3}
       propertyPath: m_Name
-      value: Wall_Floor
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 5246288815004915669, guid: c29446fbb1c9f58208cfe9f961116cc1, type: 3}
       propertyPath: m_StaticEditorFlags
@@ -1169,7 +1169,7 @@ PrefabInstance:
       objectReference: {fileID: 0}
     - target: {fileID: 5246288815004915669, guid: c29446fbb1c9f58208cfe9f961116cc1, type: 3}
       propertyPath: m_Name
-      value: Wall_Floor (1)
+      value: Floor
       objectReference: {fileID: 0}
     - target: {fileID: 5246288815004915669, guid: c29446fbb1c9f58208cfe9f961116cc1, type: 3}
       propertyPath: m_StaticEditorFlags
