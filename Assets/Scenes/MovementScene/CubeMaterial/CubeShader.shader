@@ -67,8 +67,7 @@ Shader "Unlit/CubeShader"
             fixed4 frag (v2f i) : SV_Target
             {
                 fixed2 st = i.uv;
-                st = frac(st * _Scale * 3);
-                // st = frac(st * 2);
+                st = frac(st * _Scale * 4);
                 st = st * 2 - 1;
 
                 fixed dst = length(i.viewPos);
@@ -77,8 +76,9 @@ Shader "Unlit/CubeShader"
                 fixed m = max(abs(st.x), abs(st.y));
                 fixed m2 = 1-min(abs(st.x), abs(st.y));
 
-                t = m + 0.025;
-                t -= pow(m2, 2.0);
+                t = m + 0.033;
+                // t -= pow(m2, 2.0);
+                // t -= pow(m2, 2.0) * pow(1/dst/2, 1.0);
                 t = clamp(t, 0, 1);
 
                 fixed normCos = dot(normalize(i.viewNormal), normalize(-i.viewPos));
@@ -89,12 +89,8 @@ Shader "Unlit/CubeShader"
 
                 t *= pow(1 - dstmod / (dstmod + 0.2), 1 / normCos);
 
-                // t = pow(t, 2);
-
-                fixed4 col = fixed4(t, t, t, 1.0);
-                // apply fog
                 UNITY_APPLY_FOG(i.fogCoord, col);
-                return col;
+                return _Color * t;
                 // return fixed4(normCos, normCos, normCos, 1.0);
                 // return fixed4(i.viewNormal*0.5+0.5, 1.0);
             }
