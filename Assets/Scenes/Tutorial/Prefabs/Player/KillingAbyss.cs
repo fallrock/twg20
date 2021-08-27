@@ -9,12 +9,7 @@ public class KillingAbyss : MonoBehaviour
     {
         if (transform.position.y < abyssLevel)
         {
-            gameObject
-                .transform
-                .parent
-                .gameObject
-                .GetComponent<Lifecycle>()
-                .RespawnImmediately();
+            GetComponent<ExplosiveController>().Explode();
         }
     }
 }
