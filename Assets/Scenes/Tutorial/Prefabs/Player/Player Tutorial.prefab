@@ -59,5 +59,9 @@ PrefabInstance:
       propertyPath: characterPrefab
       value: 
       objectReference: {fileID: 547051170088761149, guid: 394aec71405fed6fc941105a8c8d2dce, type: 3}
+    - target: {fileID: 7435446013380801377, guid: 21adfc4e6b3f3cb6faf1d24bfdb90736, type: 3}
+      propertyPath: clonePrefab
+      value: 
+      objectReference: {fileID: 6069284193967264376, guid: e070c57d873bd591ca8d8612ed6832ae, type: 3}
     m_RemovedComponents: []
   m_SourcePrefab: {fileID: 100100000, guid: 21adfc4e6b3f3cb6faf1d24bfdb90736, type: 3}

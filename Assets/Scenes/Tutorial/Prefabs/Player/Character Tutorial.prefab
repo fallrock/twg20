@@ -24,6 +24,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 956d7e1f9d0f6bb0bbf1a8b7b4f9e425, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  abyssLevel: -10
 --- !u!1001 &9095705719707952507
 PrefabInstance:
   m_ObjectHideFlags: 0
@@ -31,6 +32,10 @@ PrefabInstance:
   m_Modification:
     m_TransformParent: {fileID: 0}
     m_Modifications:
+    - target: {fileID: 1205607069279540093, guid: 719a2617adabf81ee8a5631e5cdac62b, type: 3}
+      propertyPath: explosionPrefab
+      value: 
+      objectReference: {fileID: 690446763659397416, guid: 9d68c5cabbb707152a8caadeeac5321b, type: 3}
     - target: {fileID: 8767932387300758081, guid: 719a2617adabf81ee8a5631e5cdac62b, type: 3}
       propertyPath: m_RootOrder
       value: 0
