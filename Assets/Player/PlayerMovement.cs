@@ -32,9 +32,7 @@ public class PlayerMovement : MonoBehaviour
             for (int i = 0; i < collision.contactCount; i++) {
                 Vector3 normal = collision.GetContact(i).normal;
                 if (Vector3.Dot(velocity, normal) >= this.minWallJumpSpeed) {
-                    Vector3 currentVelocity = GetComponent<Rigidbody>().velocity;
-                    currentVelocity.y = this.jumpImpulse;
-                    GetComponent<Rigidbody>().velocity = currentVelocity;
+                    Jump();
                     return;
                 }
             }
@@ -54,9 +52,7 @@ public class PlayerMovement : MonoBehaviour
 
     void Update() {
         if (this.onGround && Input.GetKey(KeyCode.Space)) {
-            Vector3 velocity = GetComponent<Rigidbody>().velocity;
-            velocity.y = this.jumpImpulse;
-            GetComponent<Rigidbody>().velocity = velocity;
+            Jump();
         }
     }
 
@@ -75,6 +71,14 @@ public class PlayerMovement : MonoBehaviour
             }
         }
         onGround = false;
+    }
+
+    void Jump() {
+        Vector3 velocity = GetComponent<Rigidbody>().velocity;
+        if (velocity.y <= this.jumpImpulse) {
+            velocity.y = this.jumpImpulse;
+            GetComponent<Rigidbody>().velocity = velocity;
+        }
     }
 
     Vector3 GetWorldSpaceInput() {
