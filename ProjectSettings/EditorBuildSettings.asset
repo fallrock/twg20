@@ -15,9 +15,9 @@ EditorBuildSettings:
     path: Assets/Scenes/MovementScene/MovementTestScene.unity
     guid: 9fc0d4010bbf28b4594072e72b8655ab
   - enabled: 1
-    path: Assets/Scenes/Max's scene/Max's scene.unity
-    guid: 63bbeb599e2215944aa307d47072763d
-  - enabled: 1
     path: Assets/Scenes/Alexis map/Alex.unity
     guid: c1417afcc02a94617963e8ce1ea6d887
+  - enabled: 1
+    path: Assets/Scenes/Max's scene/Max's scene.unity
+    guid: 63bbeb599e2215944aa307d47072763d
   m_configObjects: {}
