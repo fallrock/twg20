@@ -83,17 +83,17 @@ Shader "Unlit/CubeShader"
                 st = frac(st * 4);
                 st = st * 2 - 1;
 
+                fixed m2 = 1-min(min(abs(st.x), abs(st.y)), abs(st.z));
                 st -= dot(st, i.modelNormal) * i.modelNormal;
 
                 fixed dst = length(i.viewPos);
 
                 fixed t = 0.0;
                 fixed m = max(max(abs(st.x), abs(st.y)), abs(st.z));
-                fixed m2 = 1-min(min(abs(st.x), abs(st.y)), abs(st.z));
 
                 t = m + 0.033;
                 // t -= pow(m2, 2.0);
-                // t -= pow(m2, 2.0) * pow(1/dst/2, 1.0);
+                t -= pow(m2, 2.0) * pow(1/dst/2, 1.0);
                 t = clamp(t, 0, 1);
 
                 fixed normCos = dot(normalize(i.viewNormal), normalize(-i.viewPos));
