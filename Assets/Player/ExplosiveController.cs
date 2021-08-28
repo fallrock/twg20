@@ -8,7 +8,7 @@ public class ExplosiveController : MonoBehaviour
     public GameObject explosionPrefab;
 
     void Update() {
-        if (Input.GetKeyDown(KeyCode.Q)) {
+        if (Input.GetKey(KeyCode.Q)) {
             Explode();
         }
     }
