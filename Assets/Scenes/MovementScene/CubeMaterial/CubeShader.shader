@@ -93,7 +93,7 @@ Shader "Unlit/CubeShader"
 
                 t = m + 0.033;
                 // t -= pow(m2, 2.0);
-                t -= pow(m2, 2.0) * pow(1/dst/2, 1.0);
+                // t -= pow(m2, 2.0) * pow(1/dst/2, 1.0);
                 t = clamp(t, 0, 1);
 
                 fixed normCos = dot(normalize(i.viewNormal), normalize(-i.viewPos));
