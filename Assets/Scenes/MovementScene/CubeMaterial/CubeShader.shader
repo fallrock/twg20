@@ -35,6 +35,10 @@ Shader "Unlit/CubeShader"
                 float4 vertex : SV_POSITION;
                 float3 viewNormal : TEXCOORD1;
                 float3 viewPos : TEXCOORD2;
+                float3 worldPos : TEXCOORD3;
+                float3 modelPos : TEXCOORD4;
+                float3 worldNormal : TEXCOORD5;
+                float3 modelNormal : TEXCOORD6;
             };
 
             fixed4 _Color;
@@ -51,8 +55,12 @@ Shader "Unlit/CubeShader"
                 v2f o;
                 o.vertex = UnityObjectToClipPos(v.vertex);
                 o.uv = v.uv;
+                o.modelNormal = v.normal;
                 o.viewNormal = myObjectToViewNormal(v.normal);
+                o.modelPos = v.vertex;
                 o.viewPos = UnityObjectToViewPos(v.vertex);
+                o.worldPos = mul(unity_ObjectToWorld, v.vertex);
+                o.worldNormal = UnityObjectToWorldNormal(v.normal);
                 UNITY_TRANSFER_FOG(o,o.vertex);
                 return o;
             }
@@ -66,19 +74,26 @@ Shader "Unlit/CubeShader"
 
             fixed4 frag (v2f i) : SV_Target
             {
-                fixed2 st = i.uv;
-                st = frac(st * _Scale * 4);
+                fixed3 st = i.modelPos.xyz;
+                float3 scale;
+                scale.x = length(unity_ObjectToWorld._m00_m10_m20);
+                scale.y = length(unity_ObjectToWorld._m01_m11_m21);
+                scale.z = length(unity_ObjectToWorld._m02_m12_m22);
+                st = st * scale;
+                st = frac(st * 4);
                 st = st * 2 - 1;
+
+                st -= dot(st, i.modelNormal) * i.modelNormal;
 
                 fixed dst = length(i.viewPos);
 
                 fixed t = 0.0;
-                fixed m = max(abs(st.x), abs(st.y));
-                fixed m2 = 1-min(abs(st.x), abs(st.y));
+                fixed m = max(max(abs(st.x), abs(st.y)), abs(st.z));
+                fixed m2 = 1-min(min(abs(st.x), abs(st.y)), abs(st.z));
 
                 t = m + 0.033;
                 // t -= pow(m2, 2.0);
-                t -= pow(m2, 2.0) * pow(1/dst/2, 1.0);
+                // t -= pow(m2, 2.0) * pow(1/dst/2, 1.0);
                 t = clamp(t, 0, 1);
 
                 fixed normCos = dot(normalize(i.viewNormal), normalize(-i.viewPos));
@@ -91,6 +106,7 @@ Shader "Unlit/CubeShader"
 
                 UNITY_APPLY_FOG(i.fogCoord, col);
                 return _Color * t;
+                // return fixed4(abs(st.x), abs(st.y), abs(st.z), 1);
                 // return fixed4(normCos, normCos, normCos, 1.0);
                 // return fixed4(i.viewNormal*0.5+0.5, 1.0);
             }
