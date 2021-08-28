@@ -11,20 +11,27 @@ public class Explosion : MonoBehaviour
     void Start()
     {
         Explode();
-        ///TODO: delete gameObject when animation is done
-        // GameObject.Destroy(gameObject);
     }
 
     public void Explode() {
         Vector3 explosionPos = transform.position;
-        Collider[] colliders = Physics.OverlapSphere(explosionPos, radius);
+        Collider[] colliders
+            = Physics.OverlapSphere(explosionPos, radius);
+
         foreach (Collider hit in colliders)
         {
             Rigidbody rb = hit.GetComponent<Rigidbody>();
 
-            if (rb != null) {
-                rb.AddExplosionForce(power, explosionPos, radius);
+            if (rb == null) continue;
+
+            var timer = rb.gameObject.GetComponent<ExplosionTimer>();
+            if (timer != null)
+            {
+                if (!timer.Ready) continue;
+                timer.Set();
             }
+
+            rb.AddExplosionForce(power, explosionPos, radius);
         }
     }
 }

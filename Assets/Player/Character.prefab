@@ -105,16 +105,16 @@ GameObject:
   m_Component:
   - component: {fileID: 8767932387300758081}
   - component: {fileID: 8767932387300758084}
-  - component: {fileID: 8767932387300758094}
   - component: {fileID: 8767932387300758080}
   - component: {fileID: 8767932387300758085}
   - component: {fileID: 8197384361753409357}
   - component: {fileID: 8767932387300758095}
   - component: {fileID: 6288301079197304652}
   - component: {fileID: 1205607069279540093}
+  - component: {fileID: 1460851597549503789}
   m_Layer: 0
   m_Name: Character
-  m_TagString: Untagged
+  m_TagString: Player.Character
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -147,19 +147,6 @@ SphereCollider:
   serializedVersion: 2
   m_Radius: 0.5
   m_Center: {x: 0, y: 0, z: 0}
---- !u!135 &8767932387300758094
-SphereCollider:
-  m_ObjectHideFlags: 0
-  m_CorrespondingSourceObject: {fileID: 0}
-  m_PrefabInstance: {fileID: 0}
-  m_PrefabAsset: {fileID: 0}
-  m_GameObject: {fileID: 8767932387300758086}
-  m_Material: {fileID: 0}
-  m_IsTrigger: 1
-  m_Enabled: 1
-  serializedVersion: 2
-  m_Radius: 0.45
-  m_Center: {x: 0, y: -0.1, z: 0}
 --- !u!54 &8767932387300758080
 Rigidbody:
   m_ObjectHideFlags: 0
@@ -196,6 +183,8 @@ MonoBehaviour:
   steeringMinSpeed: 3
   steerAcceleration: 15
   jumpImpulse: 5
+  minWallJumpSpeed: 4
+  maxGroundAngle: 60
   steerSmoothing: 0.95
   afkDeceleration: 1
   friction: 0.005
@@ -316,7 +305,7 @@ TrailRenderer:
     textureMode: 0
     shadowBias: 0.5
     generateLightingData: 0
-  m_MinVertexDistance: 0.1
+  m_MinVertexDistance: 0.01
   m_Autodestruct: 0
   m_Emitting: 1
 --- !u!114 &6288301079197304652
@@ -345,3 +334,16 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   lifecycle: {fileID: 0}
   explosionPrefab: {fileID: 1398384210024287389, guid: 4b62465aa5b08aca3bbcb7b7daf6bf0d, type: 3}
+--- !u!114 &1460851597549503789
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 8767932387300758086}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 34425ed1109db81e195c94f20cca569b, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  duration: 2

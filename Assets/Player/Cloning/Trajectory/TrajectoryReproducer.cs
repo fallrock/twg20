@@ -9,6 +9,14 @@ public class TrajectoryReproducer : MonoBehaviour
     private float currentRoundBeginning;
     private Trajectory trajectory;
 
+    public float EndTime {
+        get {
+            float offset = this.trajectory.Count * Time.fixedDeltaTime;
+            float endTime = currentRoundBeginning + offset;
+            return endTime;
+        }
+    }
+
     public void Initialize(Trajectory trajectory) {
         this.trajectory = trajectory;
     }

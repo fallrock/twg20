@@ -13,7 +13,7 @@ public class ExplosiveController : MonoBehaviour
         }
     }
 
-    void Explode() {
+    public void Explode() {
         lifecycle.clones.Store(GetComponent<TrajectoryRecorder>().GetTrajectory());
         Instantiate(explosionPrefab, transform.position, Quaternion.identity);
         lifecycle.RespawnLater();
