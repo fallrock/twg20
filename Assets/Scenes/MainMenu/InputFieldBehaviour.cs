@@ -15,7 +15,7 @@ public class InputFieldBehaviour : MonoBehaviour {
 
     public float val { get; private set; }
 
-    void Start() {
+    void Awake() {
         this.inputField.onValueChanged.AddListener(OnValueChanged);
         this.inputField.onEndEdit.AddListener(OnEndEdit);
 
