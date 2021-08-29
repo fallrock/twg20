@@ -33,6 +33,7 @@ public class Lifecycle : MonoBehaviour
         character.GetComponent<ExplosiveController>().lifecycle = this;
         GetComponent<WinLogic>().playerMovement = character.GetComponent<PlayerMovement>();
         GetComponent<WinLogic>().cameraControls = this.playerCamera.GetComponent<CameraControls>();
+        GetComponent<Hud>().trajectory = character.GetComponent<TrajectoryRecorder>();
         this.playerCamera.target = character.transform;
     }
 

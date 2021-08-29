@@ -17,6 +17,7 @@ public class WinLogic : MonoBehaviour
         Cursor.lockState = CursorLockMode.None;
         cameraControls.enabled = false;
         playerMovement.enabled = false;
+        Time.timeScale = 0f;
     }
 
 }

@@ -5,7 +5,7 @@ using UnityEngine;
 public class TrajectoryRecorder : MonoBehaviour
 {
     private Trajectory trajectory = new Trajectory();
-    private float currentRoundBeginning;
+    public float currentRoundBeginning { get; private set; }
 
     void Start() {
         Reset();
