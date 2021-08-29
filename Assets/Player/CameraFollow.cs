@@ -9,7 +9,7 @@ public class CameraFollow : MonoBehaviour
 
     public Transform target;
 
-    void Update() {
+    void LateUpdate() {
         if (target) {
             float t = 1f - Mathf.Pow(1f - lerpSpeed, Time.deltaTime * 60f);
             transform.position = Vector3.Lerp(transform.position, target.position, t);
