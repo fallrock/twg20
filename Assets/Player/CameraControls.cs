@@ -4,8 +4,8 @@ using UnityEngine;
 
 public class CameraControls : MonoBehaviour
 {
-    public float mouseSensitivity = 6f;
-    public float mouseSmoothing = 3f;
+    private float mouseSensitivity = 6f;
+    private float mouseSmoothing = 3f;
 
     private float clampInDegreesY = 179f;
     private Vector2 _mouseAbsolute;
@@ -13,6 +13,9 @@ public class CameraControls : MonoBehaviour
     private Quaternion targetOrientation;
 
     void Start() {
+        mouseSensitivity = PlayerPrefs.GetFloat("mouse_sensitivity");
+        mouseSmoothing = PlayerPrefs.GetFloat("mouse_smoothing");
+
         Vector3 eulerAngles = transform.rotation.eulerAngles;
         eulerAngles.x = 0f;
         targetOrientation = Quaternion.Euler(eulerAngles);
